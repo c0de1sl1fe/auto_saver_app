@@ -27,6 +27,7 @@ class container_to_save_data:
             # throw exception
             logging.error(
                 f"Doesn't created because of: is_exist src and str and time - {is_exist_src, is_exist_dsc, (time>0)}")
+        self.dirs_cmp_structure = filecmp.dircmp(self.src, self.dst)
 
     def print_text(self):
         print(self)
