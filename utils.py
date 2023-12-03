@@ -28,15 +28,6 @@ class container_to_save_data:
             # throw exception
             logging.error(
                 f"Doesn't created because of: is_exist src and str and time - {is_exist_src, is_exist_dsc, (time>0)}")
-    def set_dst(self, dst:str):
-            if os.path.exists(dst):
-                self.dst = dst
-                logging.info("dst is upd'ed")
-    def set_src(self, src:str):
-            if os.path.exists(src):
-                self.src = src
-                logging.info("dst is upd'ed")
-
 
     def print_text(self):
         print(self)
