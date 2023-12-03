@@ -80,7 +80,7 @@ class container_to_save_data:
             return False
         try:
             if not ignore:
-                shutil.copytree(src, dst, ignore=ignore)
+                shutil.copytree(src, dst, ignore=shutil.ignore_patterns(ignore))
             else:
                 shutil.copytree(src, dst)
             return True
