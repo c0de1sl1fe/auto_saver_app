@@ -79,7 +79,7 @@ class container_to_save_data:
         if not os.path.exists(src) or not os.path.exists(dst):
             return False
         try:
-            if not ignore:
+            if ignore:
                 shutil.copytree(src, dst, ignore=shutil.ignore_patterns(ignore))
             else:
                 shutil.copytree(src, dst)
@@ -99,7 +99,7 @@ class container_to_save_data:
         @return: True if the directory trees are the same and 
             there were no errors while accessing the directories or files, 
             False otherwise.
-    """
+        """
         if not os.path.exists(src) or not os.path.exists(dst):
             return False
 
