@@ -1,11 +1,12 @@
 import typing
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QShortcut, qApp, QDesktopWidget, QFileDialog, QMessageBox, QPushButton, QLabel, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QShortcut, qApp, QDesktopWidget, QFileDialog, QMessageBox, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QTimeEdit, QRadioButton, QCheckBox, QStatusBar
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import QTimer
 from PyQt5 import uic
 from functools import partial
 
+import time
 
 import os
 import sys
@@ -29,6 +30,17 @@ class App(QMainWindow):
         self.to_label = self.findChild(QLabel, "to_lable")
         self.from_button.clicked.connect(partial(self.__input_path,self.from_lable))
         self.to_button.clicked.connect(partial(self.__input_path,self.to_label))
+        
+        self.time_holder = self.findChild(QTimeEdit, "time_holder")
+        self.time_holder.editingFinished.connect(self.update_time)
+        self.time_for_timer = 0
+
+        self.check_box_1 = self.findChild(QCheckBox, "Check_box_1")
+        self.check_box_2 = self.findChild(QCheckBox, "Check_box_2")
+        self.check_box_3 = self.findChild(QCheckBox, "Check_box_3")
+
+        self.check_box_1.toggled.connect(self.onClicked)
+
 
         self.tmp_button = self.findChild(QPushButton, "tmp_button")
         self.stats_lable = self.findChild(QLabel, "stats_lable")
@@ -36,6 +48,9 @@ class App(QMainWindow):
         self.external = container_to_save_data("tmp", "tmp1", 0)
         self.tmp_button.clicked.connect(self.is_equal)
 
+
+        self.status_bar = self.statusBar()
+        self.status_bar.showMessage("test", 3000)
         # self.setWindowTitle("test")
         # self.resize(400, 400)
 
@@ -67,7 +82,15 @@ class App(QMainWindow):
         self.is_equal()
         # self.t+=1
         # self.time.setText(f"Time is {self.t}")
-         
+    
+
+    def update_time(self):
+        value = self.time_holder.time().toPyTime()
+        self.status_bar.showMessage(f"{value.hour} {value.minute}")
+        self.time_for_timer = value.minute #tmp
+    def onClicked(self):
+        self.status_bar.showMessage(f"Checkbox is {self.check_box_1.isChecked()}")
+
 
     def is_equal(self):
         self.timer.start()

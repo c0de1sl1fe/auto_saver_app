@@ -68,7 +68,7 @@ class container_to_save_data:
             print(f"exeption: {e}")
             return False
 
-    def copy_folder(self, src: str, dst: str, ignore = []) -> bool:
+    def full_backup(self, src: str, dst: str, ignore = []) -> bool:
         """
         Create a copy of scr into dst
         input:  src:     string
@@ -76,17 +76,18 @@ class container_to_save_data:
                 ingnore: list of ignored files
         return: bool
         """
-        if not os.path.exists(src) or not os.path.exists(dst):
+        if not os.path.exists(src):
             return False
         try:
             if ignore:
-                shutil.copytree(src, dst, ignore=shutil.ignore_patterns(ignore))
+                shutil.copytree(src, dst, ignore=shutil.ignore_patterns(ignore), dirs_exist_ok=True)
             else:
-                shutil.copytree(src, dst)
+                shutil.copytree(src, dst, dirs_exist_ok=True)
             return True
         except Exception as e:
             print(f"error {e}")
             return False
+
 
     def cmp_folder(self, src: str, dst: str) -> bool:
         """
@@ -102,8 +103,6 @@ class container_to_save_data:
         """
         if not os.path.exists(src) or not os.path.exists(dst):
             return False
-
-
         self.dirs_cmp = filecmp.dircmp(src, dst)
         if len(self.dirs_cmp.left_only) > 0 or len(self.dirs_cmp.right_only) > 0 or \
                 len(self.dirs_cmp.funny_files) > 0:
