@@ -2,10 +2,11 @@ import os
 import shutil
 import logging
 import filecmp
+from datetime import datetime
 
 
 class container_to_save_data:
-    def __init__(self, source: str, destination: str, time = 100) -> None:
+    def __init__(self, source: str, destination: str, time=100) -> None:
         """constructor
         input:  source of files
                 destination(where to save)
@@ -27,19 +28,30 @@ class container_to_save_data:
         else:
             # throw exception
             logging.error(
-                f"Doesn't created because of: is_exist src and str and time - {is_exist_src, is_exist_dsc, (time>0)}")
-    def set_dst(self, dst:str):
-            if os.path.exists(dst):
-                self.dst = dst
-                logging.info("dst is upd'ed")
-    def set_src(self, src:str):
-            if os.path.exists(src):
-                self.src = src
-                logging.info("dst is upd'ed")
+                f"Doesn't created because of: is_exist src and str and time - {is_exist_src, is_exist_dsc, (time > 0)}")
 
+    def set_dst(self, dst: str):
+        if dst:
+            self.dst = dst
+            logging.info("dst is upd'ed")
+
+    def set_src(self, src: str):
+        if os.path.exists(src):
+            self.src = src
+            logging.info("dst is upd'ed")
+
+    def set_time(self, time: int):
+        if time > 0:
+            self.time = time
 
     def print_text(self):
         print(self)
+
+    def create_name(self, src: str, dst: str):
+        now = datetime.now()
+        tmp = os.path.join(dst, os.path.basename(
+            src)+" backup: " + str(now.strftime("%d/%m/%Y %H:%M:%S")))
+        return tmp
 
     # def is_exist(self, path) -> bool:
     #     """
@@ -51,6 +63,14 @@ class container_to_save_data:
     #     os.path.exists
     #     print
 
+    def rename_folder(self, new: str, old: str) -> bool:
+        try:
+            shutil.move(old, new)
+            return True
+        except Exception as e:
+            print(f"exeption: {e}")
+            return False
+
     def make_folder(self, path: str) -> bool:
         """
         Create new folder of new record
@@ -61,6 +81,7 @@ class container_to_save_data:
         """
         if not os.path.exists(path):
             return False
+
         try:
             os.mkdir(path)
             return True
@@ -68,7 +89,7 @@ class container_to_save_data:
             print(f"exeption: {e}")
             return False
 
-    def full_backup(self, src: str, dst: str, ignore = []) -> bool:
+    def full_backup(self, src: str, dst: str, ignore=[]) -> bool:
         """
         Create a copy of scr into dst
         input:  src:     string
@@ -80,14 +101,14 @@ class container_to_save_data:
             return False
         try:
             if ignore:
-                shutil.copytree(src, dst, ignore=shutil.ignore_patterns(ignore), dirs_exist_ok=True)
+                shutil.copytree(src, dst, ignore=shutil.ignore_patterns(
+                    ignore), dirs_exist_ok=True)
             else:
                 shutil.copytree(src, dst, dirs_exist_ok=True)
             return True
         except Exception as e:
             print(f"error {e}")
             return False
-
 
     def cmp_folder(self, src: str, dst: str) -> bool:
         """
@@ -119,6 +140,7 @@ class container_to_save_data:
         return True
     # need to add full backup, differential backup(copy only changed files)
     # add pattent of backuping: full -> dif -> dif -> dif -> full
+
 
 if __name__ == '__main__':
     a = container_to_save_data(

@@ -206,6 +206,28 @@
          <item>
           <widget class="QTimeEdit" name="time_holder"/>
          </item>
+         <item>
+          <widget class="QPushButton" name="time_button">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Apply</string>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -220,21 +242,21 @@
          <item>
           <widget class="QCheckBox" name="Check_box_1">
            <property name="text">
-            <string>exe</string>
+            <string>*.exe</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="Check_box_2">
            <property name="text">
-            <string>txt</string>
+            <string>*.txt</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="Check_box_3">
            <property name="text">
-            <string>tmp</string>
+            <string>tmp*</string>
            </property>
           </widget>
          </item>
