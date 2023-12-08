@@ -99,11 +99,12 @@ class App(QMainWindow):
         # add backup option
         if not self.dst_list:
             self.dst_list.append(self.external.create_name(self.src, self.dst))
-        if not self.external.cmp_folder(self.src, self.dst_list[-1]):
+        if not self.external.cmp_folder(self.src, self.dst_list[-1], self.ignore_pattern):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
             print(f"backup {self.external.full_backup(self.src, self.dst_list[-1], self.ignore_pattern)}")    
         else:
             print("equal")
+            self.stats_lable.setText(f"last backup: {os.path.basename(self.dst_list[-1])}")
         print("_timer_end_")
 
     def update_time(self):
@@ -161,7 +162,6 @@ class App(QMainWindow):
                 self, "Error", "please select dir", QMessageBox.Ok)
         else:
             label.setText(tmp)
-            print()
             # print into status_bar
 
 

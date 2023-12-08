@@ -1,5 +1,6 @@
 import os
 import shutil
+import glob
 import logging
 import filecmp
 from datetime import datetime
@@ -103,7 +104,7 @@ class container_to_save_data:
         try:
             if ignore:
                 shutil.copytree(src, dst, ignore=shutil.ignore_patterns(
-                    ignore), dirs_exist_ok=True)
+                    *ignore), dirs_exist_ok=True)
             else:
                 shutil.copytree(src, dst, dirs_exist_ok=True)
             return True
@@ -111,21 +112,32 @@ class container_to_save_data:
             print(f"error {e}")
             return False
 
-    def cmp_folder(self, src: str, dst: str) -> bool:
+    def cmp_folder(self, src: str, dst: str, ignore=[]) -> bool:
         """
         Compare two directories recursively. Files in each directory are
         assumed to be equal if their names and contents are equal.
 
-        @param dir1: First directory path
-        @param dir2: Second directory path
-
+        @param src: First directory path
+        @param dst: Second directory path
+        @param ignore: list of patter to ignore
         @return: True if the directory trees are the same and 
             there were no errors while accessing the directories or files, 
             False otherwise.
         """
         if not os.path.exists(src) or not os.path.exists(dst):
             return False
-        self.dirs_cmp = filecmp.dircmp(src, dst)
+        ignore_list = []
+        if not ignore:
+            for pattern in ignore:
+                ignore_left = [os.path.split(expanded)[1] for expanded in glob.glob(
+                    os.path.join(src, pattern))]
+                ignore_right = [os.path.split(expanded)[1] for expanded in glob.glob(
+                    os.path.join(dst, pattern))]
+                ignore_list.extend(ignore_left)
+                ignore_list.extend(ignore_right)
+            self.dirs_cmp = filecmp.dircmp(src, dst, ignore=ignore_list)
+        else:
+            self.dirs_cmp = filecmp.dircmp(src, dst)
         if len(self.dirs_cmp.left_only) > 0 or len(self.dirs_cmp.right_only) > 0 or \
                 len(self.dirs_cmp.funny_files) > 0:
             return False
