@@ -100,8 +100,10 @@ class App(QMainWindow):
         if not self.dst_list:
             self.dst_list.append(self.external.create_name(self.src, self.dst))
         if not self.external.cmp_folder(self.src, self.dst_list[-1]):
-            self.external.full_backup(self.src, self.dst_list[-1], self.ignore_pattern)       
-        #
+            self.dst_list.append(self.external.create_name(self.src, self.dst))
+            print(f"backup {self.external.full_backup(self.src, self.dst_list[-1], self.ignore_pattern)}")    
+        else:
+            print("equal")
         print("_timer_end_")
 
     def update_time(self):
@@ -124,8 +126,8 @@ class App(QMainWindow):
                 if i.isChecked():
                     self.ignore_pattern.append(i.text())
             print(self.time_for_timer)
-
-            if self.time_for_timer > 0 and self.to_label.text() != "to" and self.to_label.text() and self.from_label.text() != "to" and self.from_label.text() and (self.to_label.text() in self.from_label.text()):
+            print(self.time_for_timer, self.to_label.text(), self.from_label.text() )
+            if self.time_for_timer > 0 and self.to_label.text() != "to" and self.to_label.text() and self.from_label.text() != "to" and self.from_label.text():
                 self.timer.setInterval(self.time_for_timer)
                 self.src = self.from_label.text()
                 self.dst = self.to_label.text()

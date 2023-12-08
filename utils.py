@@ -50,7 +50,8 @@ class container_to_save_data:
     def create_name(self, src: str, dst: str):
         now = datetime.now()
         tmp = os.path.join(dst, os.path.basename(
-            src)+" backup: " + str(now.strftime("%d/%m/%Y %H:%M:%S")))
+            src)+" sbackup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
+
         return tmp
 
     # def is_exist(self, path) -> bool:
