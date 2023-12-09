@@ -177,9 +177,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Ignore</string>
+          <string>Patter of backup</string>
          </property>
         </widget>
        </item>
@@ -191,9 +191,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Patter of backup</string>
+          <string>Filter</string>
          </property>
         </widget>
        </item>
@@ -279,6 +279,20 @@
           </widget>
          </item>
          <item>
+          <widget class="QRadioButton" name="backup_option_2">
+           <property name="text">
+            <string>Differential backup</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="backup_option_3">
+           <property name="text">
+            <string>Incremential backup</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QRadioButton" name="backup_option__4">
            <property name="text">
             <string>fancy pattern</string>
@@ -291,19 +305,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="recovery_button">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>406</y>
-      <width>251</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Recover</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -311,7 +312,7 @@
      <x>0</x>
      <y>0</y>
      <width>500</width>
-     <height>18</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

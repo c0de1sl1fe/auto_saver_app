@@ -37,6 +37,7 @@ class App(QMainWindow):
             partial(self.__input_path, self.to_label))
 
         self.time_holder = self.findChild(QTimeEdit, "time_holder")
+        self.time_holder.setDisplayFormat("m (n)")
         # self.time_holder.editingFinished.connect(self.update_time)
         self.time_for_timer = 0
         self.time_button = self.findChild(QPushButton, "time_button")
@@ -54,8 +55,8 @@ class App(QMainWindow):
         self.check_boxes[0].toggled.connect(self.onClicked)
 
         self.backup_option_1 = self.findChild(QRadioButton, "backup_option_1")
-        self.backup_option_2 = self.findChild(QRadioButton, "backup_option_2")
-        self.backup_option_3 = self.findChild(QRadioButton, "backup_option_3")
+        # self.backup_option_2 = self.findChild(QRadioButton, "backup_option_2")
+        # self.backup_option_3 = self.findChild(QRadioButton, "backup_option_3")
         self.backup_option_4 = self.findChild(QRadioButton, "backup_option_4")
 
         self.tmp_button = self.findChild(QPushButton, "tmp_button")
@@ -69,6 +70,7 @@ class App(QMainWindow):
         self.status_bar.showMessage("test", 300)
         # self.setWindowTitle("test")
         # self.resize(400, 400)
+        self.recovery_button = self.findChild(QPushButton, "recovery_button")
 
         # self.t = 0
         # self.time = QLabel()
