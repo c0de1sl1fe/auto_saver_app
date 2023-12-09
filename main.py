@@ -1,6 +1,7 @@
 import typing
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QShortcut, qApp, QDesktopWidget, QFileDialog, QMessageBox, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QTimeEdit, QRadioButton, QCheckBox, QStatusBar
+from PyQt5.QtCore import QDir
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QShortcut, qApp,QInputDialog,QLineEdit, QDesktopWidget, QDialog, QFileDialog, QMessageBox, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QTimeEdit, QRadioButton, QCheckBox, QStatusBar
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import QTimer
 from PyQt5 import uic
@@ -11,12 +12,15 @@ import time
 import os
 import sys
 from utils import container_to_save_data
-
+from test_ui import Ui_MainWindow
 
 class App(QMainWindow):
     def __init__(self) -> None:
-        super().__init__()
-        uic.loadUi("test_ui.ui", self)
+        QMainWindow.__init__(self)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        # super().__init__()
+        # uic.loadUi("test_ui.ui", self)
         self.init_UI()
 
     def init_UI(self) -> None:
@@ -52,7 +56,7 @@ class App(QMainWindow):
         # self.check_box_3 = self.findChild(QCheckBox, "Check_box_3")
 
         # self.check_box_1.toggled.connect(self.onClicked)
-        self.check_boxes[0].toggled.connect(self.onClicked)
+        # self.check_boxes[0].toggled.connect(self.onClicked)
 
         self.backup_option_1 = self.findChild(QRadioButton, "backup_option_1")
         # self.backup_option_2 = self.findChild(QRadioButton, "backup_option_2")
@@ -71,7 +75,7 @@ class App(QMainWindow):
         # self.setWindowTitle("test")
         # self.resize(400, 400)
         self.recovery_button = self.findChild(QPushButton, "recovery_button")
-
+        self.recovery_button.clicked.connect(self.onClicked)
         # self.t = 0
         # self.time = QLabel()
 
@@ -101,6 +105,8 @@ class App(QMainWindow):
         # add backup option
         if not self.dst_list:
             self.dst_list.append(self.external.create_name(self.src, self.dst))
+            print(f"backup {self.external.full_backup(self.src, self.dst_list[-1], self.ignore_pattern)}")  
+            
         if not self.external.cmp_folder(self.src, self.dst_list[-1], self.ignore_pattern):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
             print(f"backup {self.external.full_backup(self.src, self.dst_list[-1], self.ignore_pattern)}")    
@@ -116,7 +122,14 @@ class App(QMainWindow):
 
     def onClicked(self):
         # self.status_bar.showMessage(f"Checkbox is {self.check_box_1.isChecked()}")
-        self.status_bar.showMessage(f"Checkbox {self.check_boxes[0].text()} is {self.check_boxes[0].isChecked()}")
+        # self.status_bar.showMessage(f"Checkbox {self.check_boxes[0].text()} is {self.check_boxes[0].isChecked()}")
+        if self.dst_list:
+            text, ok = QInputDialog.getItem(self, 'Choose what to recover', 'List:', self.dst_list)
+            if ok and text:
+                print(text)
+        else:
+            QMessageBox.about(self, "No recover option", "There's nothing to recover")
+
 
     def setup_backup(self):
         if self.timer.isActive():
@@ -169,5 +182,9 @@ class App(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
+    with open("style.qss", "r") as  style_file:
+        style_str = style_file.read()
+    app.setStyleSheet(style_str)
     ex = App()
     sys.exit(app.exec_())
