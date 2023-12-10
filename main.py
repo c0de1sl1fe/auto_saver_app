@@ -183,8 +183,8 @@ class App(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    with open("style.qss", "r") as  style_file:
-        style_str = style_file.read()
-    app.setStyleSheet(style_str)
+    # with open("style.qss", "r") as  style_file:
+    #     style_str = style_file.read()
+    # app.setStyleSheet(style_str)
     ex = App()
     sys.exit(app.exec_())
