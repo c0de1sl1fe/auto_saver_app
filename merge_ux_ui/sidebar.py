@@ -301,7 +301,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         self.change_sidebar_btn.toggled['bool'].connect(self.icon_only_widget.setVisible) # type: ignore
         self.change_sidebar_btn.toggled['bool'].connect(self.full_menu_widget.setHidden) # type: ignore
         self.home_btn_1.toggled['bool'].connect(self.home_btn_2.setChecked) # type: ignore
@@ -315,7 +315,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.logo_label_3.setText(_translate("MainWindow", "Sidebar"))
+        self.logo_label_3.setText(_translate("MainWindow", "Autosaver"))
         self.home_btn_2.setText(_translate("MainWindow", "Home"))
         self.dashboard_btn_2.setText(_translate("MainWindow", "Dashboard"))
         self.exit_btn_2.setText(_translate("MainWindow", "Exit"))

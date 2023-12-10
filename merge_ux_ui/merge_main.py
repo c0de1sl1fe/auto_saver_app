@@ -3,14 +3,14 @@ import typing
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QWidget
 from PyQt5.QtCore import pyqtSlot, QFile, QTextStream
-from PyQt5.QtGui import QMovie
+from PyQt5.QtGui import QMovie, QIcon
 
 from sidebar import Ui_MainWindow
 
 import typing
 from PyQt5 import QtCore
 from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QShortcut, qApp,QInputDialog,QLineEdit, QDesktopWidget, QDialog, QFileDialog, QMessageBox, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QTimeEdit, QRadioButton, QCheckBox, QStatusBar
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QShortcut, qApp, QMenu, QAction, QInputDialog,QLineEdit, QDesktopWidget, QDialog, QFileDialog, QMessageBox, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QTimeEdit, QRadioButton, QCheckBox, QStatusBar, QSystemTrayIcon
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import QTimer
 from PyQt5 import uic
@@ -99,6 +99,22 @@ class MainWindow(QMainWindow):
 
     def init_UI(self) -> None:
 
+        # tray 
+        self.tray_icon = QSystemTrayIcon(QIcon("add/icon/logo.png"))
+        show_action = QAction("Show", self)
+        quit_action = QAction("Exit", self)
+        hide_action = QAction("Hide", self)
+        show_action.triggered.connect(self.show)
+        hide_action.triggered.connect(self.hide)
+        quit_action.triggered.connect(qApp.quit)
+        tray_menu = QMenu()
+        tray_menu.addAction(show_action)
+        tray_menu.addAction(hide_action)
+        tray_menu.addAction(quit_action)
+        self.tray_icon.setContextMenu(tray_menu)
+        self.tray_icon.show()
+
+
         self.dst = ""
         self.src = ""
         self.dst_list = []
@@ -130,7 +146,7 @@ class MainWindow(QMainWindow):
         # self.setWindowTitle("test")
         # self.resize(400, 400)
 
-        self.ui.recovery_button.clicked.connect(self.onClicked)
+        self.ui.recovery_button.clicked.connect(self.recover)
         # self.t = 0
         # self.time = QLabel()
 
@@ -175,7 +191,7 @@ class MainWindow(QMainWindow):
         print(f"{value.hour} {value.minute}")
         self.time_for_timer = value.minute*60*60  # tmp
 
-    def onClicked(self):
+    def recover(self):
         # self.status_bar.showMessage(f"Checkbox is {self.check_box_1.isChecked()}")
         # self.status_bar.showMessage(f"Checkbox {self.check_boxes[0].text()} is {self.check_boxes[0].isChecked()}")
         if self.dst_list:
@@ -185,6 +201,20 @@ class MainWindow(QMainWindow):
         else:
             QMessageBox.about(self, "No recover option", "There's nothing to recover")
 
+
+
+    # test close event
+    def closeEvent(self, event):
+        check_box = None
+        # if self.ui.Check_box_1.isChecked():
+        event.ignore()
+        self.hide()
+        self.tray_icon.showMessage(
+            "Tray Program",
+            "Application was minimized to Tray",
+            QSystemTrayIcon.Information,
+            2000
+        )
 
     def setup_backup(self):
         if self.timer.isActive():
@@ -252,10 +282,14 @@ if __name__ == "__main__":
     style_file.open(QFile.ReadOnly | QFile.Text)
     style_stream = QTextStream(style_file)
     app.setStyleSheet(style_stream.readAll())
+    
+    
 
-
+    
     window = MainWindow()
     window.show()
+    
+
 
     sys.exit(app.exec())
 

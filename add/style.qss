@@ -201,7 +201,7 @@
 	}
 	#page_2 QCheckBox {
 		font-size: 14px
-		color: #313a46;
+		
 	}
 
 /*= END
