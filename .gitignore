@@ -135,3 +135,5 @@ dataset/
 __pycache__
 __pycache__/
 .pyc
+test_folder/
+test_folder

@@ -62,16 +62,20 @@ class container_to_save_data:
         this function destroy existing path and return zip
         return path to new archive or if path already leads to archive or doesn't exist return itself
         """
+        if not os.path.exists(src) or zipfile.is_zipfile(src):
+            return src
         new_path = src
         try:
-            if os.path.exists(src) and not zipfile.is_zipfile(src):
-                path, folder_name = os.path.split(src)
-                new_path = shutil.make_archive(os.path.join(path, f"{folder_name} zipped"), 'zip', path)
-                shutil.rmtree(src)
-                return new_path
+            path, folder_name = os.path.split(src)
+            new_path = shutil.make_archive(os.path.join(path, f"{folder_name} zipped"), 'zip', src)            
         except Exception as e:
             print(f"exeption: {e}")
-            return new_path
+            new_path = src
+        try:
+            shutil.rmtree(src)            
+        except Exception as e:
+            print(f"exeption: {e}")
+        return new_path
 
     def rename_folder(self, new: str, old: str) -> bool:
         try:

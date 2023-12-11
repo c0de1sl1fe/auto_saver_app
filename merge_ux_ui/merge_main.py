@@ -159,23 +159,28 @@ class MainWindow(QMainWindow):
                 self.src, self.dst_list[-1], self.ignore_pattern)}")
             return
         for i in self.dst_list:
-            if os.path.exists:
-                print(i)
-                self.dst_list.remove(i)
+            try:
+                if not os.path.exists(i):
+                    print(i)
+                    self.dst_list.remove(i)
+            except Exception as e:
+                print(f"exeption: {e}")
 
-                
         if not self.external.cmp_folder(self.src, self.dst_list[-1], self.ignore_pattern):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
             print(f"backup {self.external.full_backup(
                 self.src, self.dst_list[-1], self.ignore_pattern)}")
+            self.ui.stats_lable.setText(
+                f"last backup: {os.path.basename(self.dst_list[-1])}")   
         else:
             print("equal")
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(self.dst_list[-1])}")
 
         if len(self.dst_list) >= 2:
-            for i in len(self.dst_list-1):
-                i = self.external.ziping(i)
+            for i in range(len(self.dst_list)-1):
+
+                self.dst_list[i] = self.external.ziping(self.dst_list[i])
         print("_timer_end_")
 
     def update_time(self):
