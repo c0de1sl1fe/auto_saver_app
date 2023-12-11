@@ -4,6 +4,7 @@ import glob
 import logging
 import filecmp
 from datetime import datetime
+import zipfile
 
 
 class container_to_save_data:
@@ -51,19 +52,26 @@ class container_to_save_data:
     def create_name(self, src: str, dst: str):
         now = datetime.now()
         tmp = os.path.join(dst, os.path.basename(
-            src)+" bbackup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
+            src)+" backup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
 
         return tmp
 
-    # def is_exist(self, path) -> bool:
-    #     """
-    #     Check is folder or file exist
-    #     input:  src: string
-    #     return: bool
-    #     """
-
-    #     os.path.exists
-    #     print
+    def ziping(self, src) -> str:
+        """
+        @path - path to folder you want to archive
+        this function destroy existing path and return zip
+        return path to new archive or if path already leads to archive or doesn't exist return itself
+        """
+        new_path = src
+        try:
+            if os.path.exists(src) and not zipfile.is_zipfile(src):
+                path, folder_name = os.path.split(src)
+                new_path = shutil.make_archive(os.path.join(path, f"{folder_name} zipped"), 'zip', path)
+                shutil.rmtree(src)
+                return new_path
+        except Exception as e:
+            print(f"exeption: {e}")
+            return new_path
 
     def rename_folder(self, new: str, old: str) -> bool:
         try:
@@ -91,6 +99,14 @@ class container_to_save_data:
             print(f"exeption: {e}")
             return False
 
+    def is_exist(self, path) -> bool:
+        """
+        Check is folder or file exist
+        input:  src: string
+        return: bool
+        """
+        return os.path.exists(path)
+    
     def full_backup(self, src: str, dst: str, ignore=[]) -> bool:
         """
         Create a copy of scr into dst

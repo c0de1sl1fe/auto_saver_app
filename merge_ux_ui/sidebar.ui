@@ -521,14 +521,17 @@
           <widget class="QLabel" name="stats_lable">
            <property name="geometry">
             <rect>
-             <x>310</x>
-             <y>300</y>
-             <width>151</width>
-             <height>41</height>
+             <x>260</x>
+             <y>290</y>
+             <width>301</width>
+             <height>91</height>
             </rect>
            </property>
            <property name="text">
             <string>status</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
           </widget>
           <widget class="QPushButton" name="tmp_button">
@@ -547,10 +550,10 @@
           <widget class="QPushButton" name="recovery_button">
            <property name="geometry">
             <rect>
-             <x>90</x>
-             <y>420</y>
-             <width>251</width>
-             <height>31</height>
+             <x>30</x>
+             <y>410</y>
+             <width>211</width>
+             <height>91</height>
             </rect>
            </property>
            <property name="text">
@@ -719,6 +722,19 @@
             <string>Full backup</string>
            </property>
           </widget>
+          <widget class="QCheckBox" name="tray_check_box">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>480</y>
+             <width>111</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Enable tray</string>
+           </property>
+          </widget>
          </widget>
          <widget class="QWidget" name="page_3">
           <layout class="QGridLayout" name="gridLayout_4">
@@ -849,8 +865,8 @@
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>194</x>
-     <y>22</y>
+     <x>221</x>
+     <y>30</y>
     </hint>
     <hint type="destinationlabel">
      <x>40</x>
@@ -865,8 +881,8 @@
    <slot>setHidden(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>187</x>
-     <y>21</y>
+     <x>221</x>
+     <y>29</y>
     </hint>
     <hint type="destinationlabel">
      <x>119</x>

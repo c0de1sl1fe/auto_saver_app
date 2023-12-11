@@ -154,7 +154,7 @@
 		border-bottom: 1px solid #313a46;	
 	}
 
-	#page home_lable {
+		 home_lable {
 		font-size: 17px;
 		color: #313a46;
 	
