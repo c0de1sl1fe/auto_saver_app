@@ -1,17 +1,2 @@
-test
-test
-test
-test
-test
-test
-test
-test
-test
-test
-test
-test
-test
-test
-test
-test
+Hello world
 test

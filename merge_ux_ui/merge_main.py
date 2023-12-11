@@ -138,18 +138,25 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("AutoSaver")
         self.setWindowIcon(QIcon("add/icon/logo.png"))
 
-        self.ui.recovery_button.clicked.connect(self.recover)
+        self.ui.recovery_button.clicked.connect(self.setup_recover)
 
         self.timer = QTimer()
         self.timer.setInterval(1000)
         self.timer.timeout.connect(self.backup)
         self.ignore_pattern = []
-
         self.show()
 
-    def start(self):
-        self.timer.start()
-        print(self.t)
+
+    def __clean_array(self):
+        for i in self.dst_list:
+            if not os.path.exists(i):
+                print(i)
+                self.dst_list.remove(i)
+
+    def __zip_array(self):
+        if len(self.dst_list) >= 2:
+            for i in range(len(self.dst_list)-1):
+                self.dst_list[i] = self.external.ziping(self.dst_list[i])
 
     def backup(self):
         # add backup option
@@ -157,30 +164,22 @@ class MainWindow(QMainWindow):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
             print(f"backup {self.external.full_backup(
                 self.src, self.dst_list[-1], self.ignore_pattern)}")
+            self.ui.stats_lable.setText(
+                f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
             return
-        for i in self.dst_list:
-            try:
-                if not os.path.exists(i):
-                    print(i)
-                    self.dst_list.remove(i)
-            except Exception as e:
-                print(f"exeption: {e}")
 
         if not self.external.cmp_folder(self.src, self.dst_list[-1], self.ignore_pattern):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
             print(f"backup {self.external.full_backup(
                 self.src, self.dst_list[-1], self.ignore_pattern)}")
             self.ui.stats_lable.setText(
-                f"last backup: {os.path.basename(self.dst_list[-1])}")   
+                f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
         else:
             print("equal")
             self.ui.stats_lable.setText(
-                f"last backup: {os.path.basename(self.dst_list[-1])}")
-
-        if len(self.dst_list) >= 2:
-            for i in range(len(self.dst_list)-1):
-
-                self.dst_list[i] = self.external.ziping(self.dst_list[i])
+                f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
+        self.__clean_array()
+        self.__zip_array()
         print("_timer_end_")
 
     def update_time(self):
@@ -188,17 +187,26 @@ class MainWindow(QMainWindow):
         print(f"{value.hour} {value.minute}")
         self.time_for_timer = value.minute*60*60  # tmp
 
-    def recover(self):
-        # self.status_bar.showMessage(f"Checkbox is {self.check_box_1.isChecked()}")
-        # self.status_bar.showMessage(f"Checkbox {self.check_boxes[0].text()} is {self.check_boxes[0].isChecked()}")
+    # def recover(self, path):
+    #     try:
+
+    #     except Exception as e:
+    #         print(f"exeption: {e}")
+
+    def setup_recover(self):
         if self.dst_list:
             text, ok = QInputDialog.getItem(
                 self, 'Choose what to recover', 'List:', self.dst_list)
             if ok and text:
                 print(text)
+                self.dst_list.remove(text)
+                self.dst_list.append(self.external.recover(text, self.src))
+                self.__clean_array()
+                self.__zip_array()
         else:
             QMessageBox.about(self, "No recover option",
                               "There's nothing to recover")
+
 
     def setup_backup(self):
         if self.timer.isActive():
@@ -239,20 +247,12 @@ class MainWindow(QMainWindow):
                     f"timer is {self.timer.isActive()} and it's because: {self.time_for_timer} or src {self.src} or dst {self.dst}")
             # self.status_bar.showMessage(f"timer is {self.timer.isActive()}")
             print(self.ignore_pattern)
-            # print(f"timer is {self.timer.isActive()}")
-
-    def is_equal(self):
-        self.timer.start()
-        if self.external.cmp_folder(self.ui.from_lable.text(), self.ui.to_lable.text()):
-            self.ui.stats_lable.setText("True")
-            self.ui.stats_lable.setStyleSheet("border: 3px solid green;")
-        else:
-            self.ui.stats_lable.setText("false")
-            self.ui.stats_lable.setStyleSheet("border: 3px solid red;")
+            # print(f"timer is {self.timer.isActive()}"
 
     def __input_path(self, label: QLabel) -> None:
         """service function"""
         tmp = QFileDialog.getExistingDirectory(self, 'Select Folder')
+
         if not tmp:
             QMessageBox.warning(
                 self, "Warning", "please select dir", QMessageBox.Ok)
