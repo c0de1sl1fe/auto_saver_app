@@ -4,7 +4,6 @@ import glob
 import logging
 import filecmp
 from datetime import datetime
-import zipfile
 
 
 class container_to_save_data:
@@ -18,19 +17,19 @@ class container_to_save_data:
         logging.basicConfig(filename='example.log',
                             encoding='utf-8', level=logging.DEBUG)
 
-        # is_exist_src = os.path.exists(source)
-        # is_exist_dsc = os.path.exists(destination)
+        is_exist_src = os.path.exists(source)
+        is_exist_dsc = os.path.exists(destination)
 
-        # if is_exist_src and is_exist_dsc and time > 0:
-        #     self.src = source  # need to check all values
-        #     self.dst = destination
-        #     self.time = time
-        #     self.dirs_cmp = filecmp.dircmp(self.src, self.dst)
-        #     logging.info("Class copy created")
-        # else:
-        #     # throw exception
-        #     logging.error(
-        #         f"Doesn't created because of: is_exist src and str and time - {is_exist_src, is_exist_dsc, (time > 0)}")
+        if is_exist_src and is_exist_dsc and time > 0:
+            self.src = source  # need to check all values
+            self.dst = destination
+            self.time = time
+            self.dirs_cmp = filecmp.dircmp(self.src, self.dst)
+            logging.info("Class copy created")
+        else:
+            # throw exception
+            logging.error(
+                f"Doesn't created because of: is_exist src and str and time - {is_exist_src, is_exist_dsc, (time > 0)}")
 
     def set_dst(self, dst: str):
         if dst:
@@ -51,32 +50,20 @@ class container_to_save_data:
 
     def create_name(self, src: str, dst: str):
         now = datetime.now()
-        # tmp = os.path.join(dst, os.path.basename(
-        #     src)+" backup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
-        tmp = os.path.join(dst, "backup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
-        tmp = os.path.join(tmp, os.path.basename(src))
+        tmp = os.path.join(dst, os.path.basename(
+            src)+" bbackup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
+
         return tmp
 
-    def ziping(self, src) -> str:
-        """
-        @path - path to folder you want to archive
-        this function destroy existing path and return zip
-        return path to new archive or if path already leads to archive or doesn't exist return itself
-        """
-        if not os.path.exists(src) or zipfile.is_zipfile(src):
-            return src
-        new_path = src
-        try:
-            # new_path = shutil.make_archive(os.path.join(path, f"{folder_name} zipped"), 'zip', src)
-            new_path = shutil.make_archive(src, "zip", src)           
-        except Exception as e:
-            print(f"exeption: {e}")
-            new_path = src
-        try:
-            shutil.rmtree(src)            
-        except Exception as e:
-            print(f"exeption: {e}")
-        return new_path
+    # def is_exist(self, path) -> bool:
+    #     """
+    #     Check is folder or file exist
+    #     input:  src: string
+    #     return: bool
+    #     """
+
+    #     os.path.exists
+    #     print
 
     def rename_folder(self, new: str, old: str) -> bool:
         try:
@@ -104,38 +91,12 @@ class container_to_save_data:
             print(f"exeption: {e}")
             return False
 
-    def is_exist(self, path) -> bool:
-        """
-        Check is folder or file exist
-        input:  src: string
-        return: bool
-        """
-        return os.path.exists(path)
-    
-    def recover(self, src:str, dst:str) -> str:
-        if not os.path.exists(src) and not os.path.exists(dst):
-            raise f"Error: {dst} or {src} doesn't exists"
-        tmp = ""
-        if zipfile.is_zipfile(src):
-            try:
-                tmp = src.replace(".zip", "")
-                shutil.unpack_archive(src, tmp)
-            except Exception as e:
-                print(f"error {e}")    
-            try:
-                os.remove(src)
-            except Exception as e:  
-                print(f"error {e}")    
-        self.full_backup(tmp, dst)
-        return tmp
-
-
     def full_backup(self, src: str, dst: str, ignore=[]) -> bool:
         """
         Create a copy of scr into dst
-        input:  @src:     string
-                @dst:     string
-                @ingnore: list of ignored files
+        input:  src:     string
+                dst:     string
+                ingnore: list of ignored files
         return: bool
         """
         if not os.path.exists(src):

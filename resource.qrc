@@ -1,0 +1,94 @@
+<RCC>
+  <qresource prefix="icon">
+    <file>icon/account-logout-64.ico</file>
+    <file>icon/activity-feed-32.ico</file>
+    <file>icon/activity-feed-48.ico</file>
+    <file>icon/close-window-64.ico</file>
+    <file>icon/dashboard-5-32.ico</file>
+    <file>icon/dashboard-5-48 (1).ico</file>
+    <file>icon/dashboard-5-48.ico</file>
+    <file>icon/group-32.ico</file>
+    <file>icon/group-48.ico</file>
+    <file>icon/home-4-32.ico</file>
+    <file>icon/home-4-48.ico</file>
+    <file>icon/Logo.png</file>
+    <file>icon/Logo_1.png</file>
+    <file>icon/menu-4-32.ico</file>
+    <file>icon/product-32.ico</file>
+    <file>icon/product-48.ico</file>
+    <file>icon/search-13-48.ico</file>
+    <file>icon/user-48.ico</file>
+    <file>img/icon/account-logout-64.ico</file>
+    <file>img/icon/activity-feed-32.ico</file>
+    <file>img/icon/activity-feed-48.ico</file>
+    <file>img/icon/close-window-64.ico</file>
+    <file>img/icon/dashboard-5-32.ico</file>
+    <file>img/icon/dashboard-5-48 (1).ico</file>
+    <file>img/icon/dashboard-5-48.ico</file>
+    <file>img/icon/group-32.ico</file>
+    <file>img/icon/group-48.ico</file>
+    <file>img/icon/home-4-32.ico</file>
+    <file>img/icon/home-4-48.ico</file>
+    <file>img/icon/Logo.png</file>
+    <file>img/icon/Logo_1.png</file>
+    <file>img/icon/menu-4-32.ico</file>
+    <file>img/icon/product-32.ico</file>
+    <file>img/icon/product-48.ico</file>
+    <file>img/icon/search-13-48.ico</file>
+    <file>img/icon/user-48.ico</file>
+    <file>img/icon/account-logout-64.ico</file>
+    <file>img/icon/activity-feed-32.ico</file>
+    <file>img/icon/activity-feed-48.ico</file>
+    <file>img/icon/close-window-64.ico</file>
+    <file>img/icon/dashboard-5-32.ico</file>
+    <file>img/icon/dashboard-5-48 (1).ico</file>
+    <file>img/icon/dashboard-5-48.ico</file>
+    <file>img/icon/group-32.ico</file>
+    <file>img/icon/group-48.ico</file>
+    <file>img/icon/home-4-32.ico</file>
+    <file>img/icon/home-4-48.ico</file>
+    <file>img/icon/Logo.png</file>
+    <file>img/icon/Logo_1.png</file>
+    <file>img/icon/menu-4-32.ico</file>
+    <file>img/icon/product-32.ico</file>
+    <file>img/icon/product-48.ico</file>
+    <file>img/icon/search-13-48.ico</file>
+    <file>img/icon/user-48.ico</file>
+    <file>img/icon/account-logout-64.ico</file>
+    <file>img/icon/activity-feed-32.ico</file>
+    <file>img/icon/activity-feed-48.ico</file>
+    <file>img/icon/close-window-64.ico</file>
+    <file>img/icon/dashboard-5-32.ico</file>
+    <file>img/icon/dashboard-5-48 (1).ico</file>
+    <file>img/icon/dashboard-5-48.ico</file>
+    <file>img/icon/group-32.ico</file>
+    <file>img/icon/group-48.ico</file>
+    <file>img/icon/home-4-32.ico</file>
+    <file>img/icon/home-4-48.ico</file>
+    <file>img/icon/Logo.png</file>
+    <file>img/icon/Logo_1.png</file>
+    <file>img/icon/menu-4-32.ico</file>
+    <file>img/icon/product-32.ico</file>
+    <file>img/icon/product-48.ico</file>
+    <file>img/icon/search-13-48.ico</file>
+    <file>img/icon/user-48.ico</file>
+    <file>icon/Logo.png</file>
+    <file>icon/account-logout-64.ico</file>
+    <file>icon/activity-feed-32.ico</file>
+    <file>icon/activity-feed-48.ico</file>
+    <file>icon/close-window-64.ico</file>
+    <file>icon/dashboard-5-32.ico</file>
+    <file>icon/dashboard-5-48 (1).ico</file>
+    <file>icon/dashboard-5-48.ico</file>
+    <file>icon/group-32.ico</file>
+    <file>icon/group-48.ico</file>
+    <file>icon/home-4-32.ico</file>
+    <file>icon/home-4-48.ico</file>
+    <file>icon/Logo.png</file>
+    <file>icon/menu-4-32.ico</file>
+    <file>icon/product-32.ico</file>
+    <file>icon/product-48.ico</file>
+    <file>icon/search-13-48.ico</file>
+    <file>icon/user-48.ico</file>
+  </qresource>
+</RCC>
