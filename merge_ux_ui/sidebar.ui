@@ -436,7 +436,7 @@
        <item>
         <widget class="QStackedWidget" name="stackedWidget">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="page">
           <widget class="QLabel" name="to_lable">
@@ -720,6 +720,9 @@
            </property>
            <property name="text">
             <string>Full backup</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
           <widget class="QCheckBox" name="tray_check_box">

@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.icon_only_widget.hide()
-        self.ui.recovery_button.setVisible(False)
+        # self.ui.recovery_button.setVisible(False)
         self.ui.stackedWidget.setCurrentIndex(0)
         self.ui.home_btn_2.setChecked(True)
 
@@ -146,7 +146,6 @@ class MainWindow(QMainWindow):
         self.ignore_pattern = []
         self.show()
 
-
     def __clean_array(self):
         for i in self.dst_list:
             if not os.path.exists(i):
@@ -182,6 +181,10 @@ class MainWindow(QMainWindow):
         self.__zip_array()
         print("_timer_end_")
 
+
+    def fancy_backup(self):
+        print(3)
+
     def update_time(self):
         value = self.ui.time_holder.time().toPyTime()
         print(f"{value.hour} {value.minute}")
@@ -206,7 +209,6 @@ class MainWindow(QMainWindow):
         else:
             QMessageBox.about(self, "No recover option",
                               "There's nothing to recover")
-
 
     def setup_backup(self):
         if self.timer.isActive():
@@ -258,10 +260,10 @@ class MainWindow(QMainWindow):
                 self, "Warning", "please select dir", QMessageBox.Ok)
         else:
             label.setText(tmp)
+
     # test close event
 
     def closeEvent(self, event):
-        check_box = None
         if self.ui.tray_check_box.isChecked():
             event.ignore()
             self.hide()

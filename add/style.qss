@@ -206,4 +206,13 @@
 
 /*= END
   ==================================================== */
-
+QInputDialog {
+	background-color: #f9fafd;
+	color: #313a46;
+	font-size: 14px;
+}
+QMessageBox {
+	background-color: #f9fafd;
+	color: #313a46;
+	font-size: 14px;
+}

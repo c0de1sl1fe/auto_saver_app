@@ -253,6 +253,7 @@ class Ui_MainWindow(object):
         self.backup_option__4.setObjectName("backup_option__4")
         self.backup_option_1 = QtWidgets.QRadioButton(self.page_2)
         self.backup_option_1.setGeometry(QtCore.QRect(390, 350, 137, 17))
+        self.backup_option_1.setChecked(True)
         self.backup_option_1.setObjectName("backup_option_1")
         self.tray_check_box = QtWidgets.QCheckBox(self.page_2)
         self.tray_check_box.setGeometry(QtCore.QRect(40, 480, 111, 41))
@@ -305,7 +306,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
         self.change_sidebar_btn.toggled['bool'].connect(self.icon_only_widget.setVisible) # type: ignore
         self.change_sidebar_btn.toggled['bool'].connect(self.full_menu_widget.setHidden) # type: ignore
         self.home_btn_1.toggled['bool'].connect(self.home_btn_2.setChecked) # type: ignore
