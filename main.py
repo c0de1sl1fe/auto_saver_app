@@ -21,7 +21,7 @@ import time
 import os
 import sys
 
-from utils import container_to_save_data
+from utils import InterfaceFileOperation
 
 
 class MainWindow(QMainWindow):
@@ -132,7 +132,7 @@ class MainWindow(QMainWindow):
 
         self.check_boxes = self.ui.stackedWidget.findChildren(QCheckBox)
 
-        self.external = container_to_save_data("tmp", "tmp1", 0)
+        self.external = InterfaceFileOperation()
         self.ui.tmp_button.clicked.connect(self.setup_backup)
 
         self.setWindowTitle("AutoSaver")

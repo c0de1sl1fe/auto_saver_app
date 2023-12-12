@@ -5,9 +5,11 @@ import logging
 import filecmp
 from datetime import datetime
 import zipfile
+
 import logging
 
-class container_to_save_data:
+
+class InterfaceFileOperation:
     def __init__(self) -> None:
         """constructor
         input:  source of files
@@ -23,11 +25,12 @@ class container_to_save_data:
             logger.setLevel(logging.INFO)
             file_handler = logging.FileHandler("autosaver.log")
             file_handler.setLevel(logging.DEBUG)
-            formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+            formatter = logging.Formatter(
+                "%(asctime)s - %(levelname)s - %(message)s")
             file_handler.setFormatter(formatter)
             logger.addHandler(file_handler)
         return logger
-    
+
     def create_name(self, src: str, dst: str):
         """create name with time of backup
             @param src - is source of folder
@@ -35,7 +38,8 @@ class container_to_save_data:
             return dst + name of folder src + str(backup_ + time)
         """
         now = datetime.now()
-        tmp = os.path.join(dst, "backup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
+        tmp = os.path.join(
+            dst, "backup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
         tmp = os.path.join(tmp, os.path.basename(src))
         self.logger.info(f"New name was created [{tmp}]")
         return tmp
@@ -51,7 +55,7 @@ class container_to_save_data:
         new_path = src
         try:
             # new_path = shutil.make_archive(os.path.join(path, f"{folder_name} zipped"), 'zip', src)
-            new_path = shutil.make_archive(src, "zip", src)         
+            new_path = shutil.make_archive(src, "zip", src)
             self.logger.info(f"Create archive - {new_path}")
         except Exception as e:
             self.logger.warning(f"Raised exeption: {e} while archive")
@@ -73,7 +77,6 @@ class container_to_save_data:
             self.logger.warning(f"Raised exeption: {e} while rename")
             return False
 
-
     def is_dir(self, path) -> bool:
         """
         Check is folder or file exist
@@ -83,10 +86,11 @@ class container_to_save_data:
         tmp = os.path.isdir(path)
         self.logger.info(f"Complete is_dir({tmp}) for {path}")
         return tmp
-    
-    def recover(self, src:str, dst:str) -> str:
+
+    def recover(self, src: str, dst: str) -> str:
         if not os.path.exists(src) and not os.path.exists(dst):
-            self.logger.info(f"Raised exeption because of src: {src} or dst: {dst} doesn't exist")
+            self.logger.info(f"Raised exeption because of src: {
+                             src} or dst: {dst} doesn't exist")
             raise f"Error: {dst} or {src} doesn't exists"
         tmp = src
         if zipfile.is_zipfile(src):
@@ -95,15 +99,15 @@ class container_to_save_data:
                 shutil.unpack_archive(src, tmp)
                 self.logger.info(f"Complete unpack archive {src} for recover")
             except Exception as e:
-                self.logger.warning(f"Raised exeption: {e} while unpack archive {src} in recover") 
+                self.logger.warning(f"Raised exeption: {
+                                    e} while unpack archive {src} in recover")
             try:
                 os.remove(src)
                 self.logger.info(f"complete remove {src} for recover")
-            except Exception as e:  
+            except Exception as e:
                 self.logger.warning(f"Raised exeption: {e} while remove {src}")
         self.full_backup(tmp, dst)
         return tmp
-
 
     def full_backup(self, src: str, dst: str, ignore=[]) -> bool:
         """
@@ -120,13 +124,16 @@ class container_to_save_data:
             if ignore:
                 shutil.copytree(src, dst, ignore=shutil.ignore_patterns(
                     *ignore), dirs_exist_ok=True)
-                self.logger.info(f"complete copy {src} to {dst} with ignore_pattern")
+                self.logger.info(f"complete copy {src} to {
+                                 dst} with ignore_pattern")
             else:
                 shutil.copytree(src, dst, dirs_exist_ok=True)
-                self.logger.info(f"complete copy {src} to {dst} without ignore_pattern")
+                self.logger.info(f"complete copy {src} to {
+                                 dst} without ignore_pattern")
             return True
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while copy {src} to {dst}")
+            self.logger.warning(f"Raised exeption: {
+                                e} while copy {src} to {dst}")
             return False
 
     def cmp_folder(self, src: str, dst: str, ignore=[]) -> bool:
@@ -142,7 +149,8 @@ class container_to_save_data:
             False otherwise.
         """
         if not os.path.exists(src) or not os.path.exists(dst):
-            self.logger.warning(f"cmp_folder for {src} and {dst} doens't complete")
+            self.logger.warning(f"cmp_folder for {src} and {
+                                dst} doens't complete")
             return False
         ignore_list = []
         if not ignore:
@@ -171,7 +179,5 @@ class container_to_save_data:
         return True
 
 
-
 if __name__ == '__main__':
-    a = container_to_save_data(
-        "D:/test\save_test\dst", "D:/test\save_test\dst", -1)
+    a = InterfaceFileOperation()
