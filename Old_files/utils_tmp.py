@@ -5,39 +5,56 @@ import logging
 import filecmp
 from datetime import datetime
 import zipfile
-import logging
+
 
 class container_to_save_data:
-    def __init__(self) -> None:
+    def __init__(self, source: str, destination: str, time=100) -> None:
         """constructor
         input:  source of files
                 destination(where to save)
                 time(how often need to check updates)
         """
-        self.logger = self.setup_logging()
 
-    def setup_logging(self) -> None:
-        """setup logging"""
-        logger = logging.getLogger("logger")
-        if not logger.handlers:
-            logger.setLevel(logging.INFO)
-            file_handler = logging.FileHandler("autosaver.log")
-            file_handler.setLevel(logging.DEBUG)
-            formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-            file_handler.setFormatter(formatter)
-            logger.addHandler(file_handler)
-        return logger
-    
+        logging.basicConfig(filename='example.log',
+                            encoding='utf-8', level=logging.DEBUG)
+
+        # is_exist_src = os.path.exists(source)
+        # is_exist_dsc = os.path.exists(destination)
+
+        # if is_exist_src and is_exist_dsc and time > 0:
+        #     self.src = source  # need to check all values
+        #     self.dst = destination
+        #     self.time = time
+        #     self.dirs_cmp = filecmp.dircmp(self.src, self.dst)
+        #     logging.info("Class copy created")
+        # else:
+        #     # throw exception
+        #     logging.error(
+        #         f"Doesn't created because of: is_exist src and str and time - {is_exist_src, is_exist_dsc, (time > 0)}")
+
+    def set_dst(self, dst: str):
+        if dst:
+            self.dst = dst
+            logging.info("dst is upd'ed")
+
+    def set_src(self, src: str):
+        if os.path.exists(src):
+            self.src = src
+            logging.info("dst is upd'ed")
+
+    def set_time(self, time: int):
+        if time > 0:
+            self.time = time
+
+    def print_text(self):
+        print(self)
+
     def create_name(self, src: str, dst: str):
-        """create name with time of backup
-            @param src - is source of folder
-            @param dst - is destination for folder
-            return dst + name of folder src + str(backup_ + time)
-        """
         now = datetime.now()
+        # tmp = os.path.join(dst, os.path.basename(
+        #     src)+" backup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
         tmp = os.path.join(dst, "backup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
         tmp = os.path.join(tmp, os.path.basename(src))
-        self.logger.info(f"New name was created [{tmp}]")
         return tmp
 
     def ziping(self, src) -> str:
@@ -51,56 +68,64 @@ class container_to_save_data:
         new_path = src
         try:
             # new_path = shutil.make_archive(os.path.join(path, f"{folder_name} zipped"), 'zip', src)
-            new_path = shutil.make_archive(src, "zip", src)         
-            self.logger.info(f"Create archive - {new_path}")
+            new_path = shutil.make_archive(src, "zip", src)           
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while archive")
+            print(f"exeption: {e}")
             new_path = src
         try:
-            shutil.rmtree(src)
-            self.logger.info(f"Complete removing tree - {src}")
-
+            shutil.rmtree(src)            
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while removing dir")
+            print(f"exeption: {e}")
         return new_path
 
     def rename_folder(self, new: str, old: str) -> bool:
         try:
             shutil.move(old, new)
-            self.logger.info(f"Folder {old} renamed to {new}")
             return True
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while rename")
+            print(f"exeption: {e}")
             return False
 
+    def make_folder(self, path: str) -> bool:
+        """
+        Create new folder of new record
+        input:  dst: string
+                n: int - order number
+                time: ? - time when record was created
+        return: bool    
+        """
+        if not os.path.exists(path):
+            return False
 
-    def is_dir(self, path) -> bool:
+        try:
+            os.mkdir(path)
+            return True
+        except Exception as e:
+            print(f"exeption: {e}")
+            return False
+
+    def is_exist(self, path) -> bool:
         """
         Check is folder or file exist
         input:  src: string
         return: bool
         """
-        tmp = os.path.isdir(path)
-        self.logger.info(f"Complete is_dir({tmp}) for {path}")
-        return tmp
+        return os.path.exists(path)
     
     def recover(self, src:str, dst:str) -> str:
         if not os.path.exists(src) and not os.path.exists(dst):
-            self.logger.info(f"Raised exeption because of src: {src} or dst: {dst} doesn't exist")
             raise f"Error: {dst} or {src} doesn't exists"
-        tmp = src
+        tmp = ""
         if zipfile.is_zipfile(src):
             try:
                 tmp = src.replace(".zip", "")
                 shutil.unpack_archive(src, tmp)
-                self.logger.info(f"Complete unpack archive {src} for recover")
             except Exception as e:
-                self.logger.warning(f"Raised exeption: {e} while unpack archive {src} in recover") 
+                print(f"error {e}")    
             try:
                 os.remove(src)
-                self.logger.info(f"complete remove {src} for recover")
             except Exception as e:  
-                self.logger.warning(f"Raised exeption: {e} while remove {src}")
+                print(f"error {e}")    
         self.full_backup(tmp, dst)
         return tmp
 
@@ -114,19 +139,16 @@ class container_to_save_data:
         return: bool
         """
         if not os.path.exists(src):
-            self.logger.warning(f"{src} doesn't exist while full_backup")
             return False
         try:
             if ignore:
                 shutil.copytree(src, dst, ignore=shutil.ignore_patterns(
                     *ignore), dirs_exist_ok=True)
-                self.logger.info(f"complete copy {src} to {dst} with ignore_pattern")
             else:
                 shutil.copytree(src, dst, dirs_exist_ok=True)
-                self.logger.info(f"complete copy {src} to {dst} without ignore_pattern")
             return True
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while copy {src} to {dst}")
+            print(f"error {e}")
             return False
 
     def cmp_folder(self, src: str, dst: str, ignore=[]) -> bool:
@@ -142,7 +164,6 @@ class container_to_save_data:
             False otherwise.
         """
         if not os.path.exists(src) or not os.path.exists(dst):
-            self.logger.warning(f"cmp_folder for {src} and {dst} doens't complete")
             return False
         ignore_list = []
         if not ignore:
@@ -169,7 +190,8 @@ class container_to_save_data:
             if not self.cmp_folder(new_dir1, new_dir2):
                 return False
         return True
-
+    # need to add full backup, differential backup(copy only changed files)
+    # add pattent of backuping: full -> dif -> dif -> dif -> full
 
 
 if __name__ == '__main__':

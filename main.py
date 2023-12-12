@@ -159,7 +159,7 @@ class MainWindow(QMainWindow):
 
     def backup(self):
         # add backup option
-        if not self.dst_list:
+        if not self.dst_list and self.external.is_dir(self.src):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
             print(f"backup {self.external.full_backup(
                 self.src, self.dst_list[-1], self.ignore_pattern)}")
@@ -206,6 +206,7 @@ class MainWindow(QMainWindow):
                 self.dst_list.append(self.external.recover(text, self.src))
                 self.__clean_array()
                 self.__zip_array()
+            self.ui.recovery_button.setVisible(False)
         else:
             QMessageBox.about(self, "No recover option",
                               "There's nothing to recover")
@@ -224,23 +225,27 @@ class MainWindow(QMainWindow):
             print(self.time_for_timer)
             print(self.time_for_timer, self.ui.to_lable.text(),
                   self.ui.from_lable.text())
-            if self.time_for_timer >= 0 and self.ui.to_lable.text() != "to" and self.ui.to_lable.text() and self.ui.from_lable.text() != "to" and self.ui.from_lable.text():
-                if self.time_for_timer == 0:
-                    self.src = self.ui.from_lable.text()
-                    self.dst = self.ui.to_lable.text()
-                    self.backup()
+            # if self.time_for_timer >= 0 and self.ui.to_lable.text() != "to" and self.ui.to_lable.text() and self.ui.from_lable.text() != "to" and self.ui.from_lable.text():
+            if self.time_for_timer >= 0 and self.external.is_dir(self.ui.to_lable.text()) and self.external.is_dir(self.ui.from_lable.text()):
+                self.src = self.ui.from_lable.text()
+                self.dst = self.ui.to_lable.text()
+                if not (self.src in self.dst or self.dst in self.src): 
+                    if self.time_for_timer == 0:    
+                        self.backup()
+                    else:
+                        self.timer.setInterval(self.time_for_timer)
+                        self.timer.start()
+                        print(
+                            f"timer is {self.timer.isActive()}")
+                        print(f"time {self.time_for_timer} src {
+                            self.src} dst {self.dst}")
+                        self.ui.tmp_button.setText("Stop")
+                        self.backup_action.setText("Stop")
+                        self.ui.recovery_button.setVisible(True)
                 else:
-                    self.timer.setInterval(self.time_for_timer)
-                    self.src = self.ui.from_lable.text()
-                    self.dst = self.ui.to_lable.text()
-                    self.timer.start()
-                    print(
-                        f"timer is {self.timer.isActive()}")
-                    print(f"time {self.time_for_timer} src {
-                          self.src} dst {self.dst}")
-                    self.ui.tmp_button.setText("Stop")
-                    self.backup_action.setText("Stop")
-                self.ui.recovery_button.setVisible(True)
+                    print(f"(self.src in self.dst - {self.src in self.dst} or self.dst in self.src - {self.dst in self.src})")
+                    QMessageBox.warning(self,"Warning", f"(self.src in self.dst - {self.src in self.dst} or self.dst in self.src - {self.dst in self.src})", QMessageBox.Ok)
+                    self.ui.stats_lable.setText("Error")
             else:
                 print('sad')
                 QMessageBox.warning(
