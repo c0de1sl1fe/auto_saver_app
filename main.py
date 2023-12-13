@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.icon_only_widget.hide()
-        # self.ui.recovery_button.setVisible(False)
+        self.ui.recovery_button.setVisible(False)
         self.ui.stackedWidget.setCurrentIndex(0)
         self.ui.home_btn_2.setChecked(True)
 
@@ -94,7 +94,7 @@ class MainWindow(QMainWindow):
     def init_UI(self) -> None:
 
         # tray
-        self.tray_icon = QSystemTrayIcon(QIcon("img/icon/logo.png"))
+        self.tray_icon = QSystemTrayIcon(QIcon("icon/Logo.png"))
         show_action = QAction("Show", self)
         quit_action = QAction("Exit", self)
         hide_action = QAction("Hide", self)
@@ -136,7 +136,7 @@ class MainWindow(QMainWindow):
         self.ui.tmp_button.clicked.connect(self.setup_backup)
 
         self.setWindowTitle("AutoSaver")
-        self.setWindowIcon(QIcon("add/icon/logo.png"))
+        self.setWindowIcon(QIcon("icon/logo.png"))
 
         self.ui.recovery_button.clicked.connect(self.setup_recover)
 
