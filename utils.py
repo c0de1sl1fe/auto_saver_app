@@ -31,15 +31,20 @@ class InterfaceFileOperation:
             logger.addHandler(file_handler)
         return logger
 
-    def create_name(self, src: str, dst: str):
+    def create_name(self, src: str, dst: str, upd=False):
         """create name with time of backup
             @param src - is source of folder
             @param dst - is destination for folder
             return dst + name of folder src + str(backup_ + time)
         """
         now = datetime.now()
-        tmp = os.path.join(
-            dst, "backup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
+        tmp = ""
+        if upd:
+            tmp = os.path.join(
+                dst, "backup_upd_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
+        else:
+            tmp = os.path.join(
+                dst, "backup_" + str(now.strftime("%d.%m.%Y_%Hh%Mm%Ss")))
         tmp = os.path.join(tmp, os.path.basename(src))
         self.logger.info(f"New name was created [{tmp}]")
         return tmp
@@ -72,10 +77,21 @@ class InterfaceFileOperation:
         try:
             shutil.move(old, new)
             self.logger.info(f"Folder {old} renamed to {new}")
-            return True
         except Exception as e:
             self.logger.warning(f"Raised exeption: {e} while rename")
             return False
+
+        if os.path.exists(os.path.split(old)[0]):
+            try:
+                shutil.rmtree(os.path.split(old)[0])
+                return True
+            except Exception as e:
+                self.logger.warning(f"Raised exeption: {e} while rename")
+                return False
+        return True
+
+
+
 
     def is_dir(self, path) -> bool:
         """
@@ -89,8 +105,7 @@ class InterfaceFileOperation:
 
     def recover(self, src: str, dst: str) -> str:
         if not os.path.exists(src) and not os.path.exists(dst):
-            self.logger.info(f"Raised exeption because of src: {
-                             src} or dst: {dst} doesn't exist")
+            self.logger.info(f"Raised exeption because of src: {src} or dst: {dst} doesn't exist")
             raise f"Error: {dst} or {src} doesn't exists"
         tmp = src
         if zipfile.is_zipfile(src):
@@ -99,8 +114,7 @@ class InterfaceFileOperation:
                 shutil.unpack_archive(src, tmp)
                 self.logger.info(f"Complete unpack archive {src} for recover")
             except Exception as e:
-                self.logger.warning(f"Raised exeption: {
-                                    e} while unpack archive {src} in recover")
+                self.logger.warning(f"Raised exeption: {e} while unpack archive {src} in recover")
             try:
                 os.remove(src)
                 self.logger.info(f"complete remove {src} for recover")
@@ -124,16 +138,13 @@ class InterfaceFileOperation:
             if ignore:
                 shutil.copytree(src, dst, ignore=shutil.ignore_patterns(
                     *ignore), dirs_exist_ok=True)
-                self.logger.info(f"complete copy {src} to {
-                                 dst} with ignore_pattern")
+                self.logger.info(f"complete copy {src} to {dst} with ignore_pattern")
             else:
                 shutil.copytree(src, dst, dirs_exist_ok=True)
-                self.logger.info(f"complete copy {src} to {
-                                 dst} without ignore_pattern")
+                self.logger.info(f"complete copy {src} to {dst} without ignore_pattern")
             return True
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {
-                                e} while copy {src} to {dst}")
+            self.logger.warning(f"Raised exeption: {e} while copy {src} to {dst}")
             return False
 
     def cmp_folder(self, src: str, dst: str, ignore=[]) -> bool:
@@ -149,8 +160,7 @@ class InterfaceFileOperation:
             False otherwise.
         """
         if not os.path.exists(src) or not os.path.exists(dst):
-            self.logger.warning(f"cmp_folder for {src} and {
-                                dst} doens't complete")
+            self.logger.warning(f"cmp_folder for {src} and {dst} doens't complete")
             return False
         ignore_list = []
         if not ignore:

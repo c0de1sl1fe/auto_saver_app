@@ -696,7 +696,7 @@
             <string>*.txt</string>
            </property>
           </widget>
-          <widget class="QRadioButton" name="backup_option__4">
+          <widget class="QRadioButton" name="backup_option_2">
            <property name="geometry">
             <rect>
              <x>390</x>

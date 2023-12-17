@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'merge_ux_ui/sidebar.ui'
+# Form implementation generated from reading ui file 'sidebar.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -248,9 +248,9 @@ class Ui_MainWindow(object):
         self.Check_box_2 = QtWidgets.QCheckBox(self.page_2)
         self.Check_box_2.setGeometry(QtCore.QRect(280, 327, 137, 17))
         self.Check_box_2.setObjectName("Check_box_2")
-        self.backup_option__4 = QtWidgets.QRadioButton(self.page_2)
-        self.backup_option__4.setGeometry(QtCore.QRect(390, 380, 137, 17))
-        self.backup_option__4.setObjectName("backup_option__4")
+        self.backup_option_2 = QtWidgets.QRadioButton(self.page_2)
+        self.backup_option_2.setGeometry(QtCore.QRect(390, 380, 137, 17))
+        self.backup_option_2.setObjectName("backup_option_2")
         self.backup_option_1 = QtWidgets.QRadioButton(self.page_2)
         self.backup_option_1.setGeometry(QtCore.QRect(390, 350, 137, 17))
         self.backup_option_1.setChecked(True)
@@ -277,7 +277,7 @@ class Ui_MainWindow(object):
         self.photo_lable = QtWidgets.QLabel(self.page_4)
         self.photo_lable.setMaximumSize(QtCore.QSize(300, 300))
         self.photo_lable.setText("")
-        self.photo_lable.setPixmap(QtGui.QPixmap("merge_ux_ui\\../img/2loading_gif.gif"))
+        self.photo_lable.setPixmap(QtGui.QPixmap("../img/2loading_gif.gif"))
         self.photo_lable.setScaledContents(True)
         self.photo_lable.setObjectName("photo_lable")
         self.gridLayout_5.addWidget(self.photo_lable, 1, 1, 1, 1)
@@ -341,7 +341,7 @@ class Ui_MainWindow(object):
         self.Check_box_3.setText(_translate("MainWindow", "tmp*"))
         self.Check_box_1.setText(_translate("MainWindow", "*.exe"))
         self.Check_box_2.setText(_translate("MainWindow", "*.txt"))
-        self.backup_option__4.setText(_translate("MainWindow", "fancy pattern"))
+        self.backup_option_2.setText(_translate("MainWindow", "fancy pattern"))
         self.backup_option_1.setText(_translate("MainWindow", "Full backup"))
         self.tray_check_box.setText(_translate("MainWindow", "Enable tray"))
         self.label_3.setText(_translate("MainWindow", "User_page"))
