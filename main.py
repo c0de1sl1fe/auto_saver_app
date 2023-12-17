@@ -202,6 +202,7 @@ class MainWindow(QMainWindow):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
             print(f"backup {self.external.full_backup(
                 self.src, self.dst_list[-1], self.ignore_pattern)}")
+            # if return false eslf.dst list . remove self.dst_list[-1]!!!!!!!!!!!!!!!!!!!
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
         else:
