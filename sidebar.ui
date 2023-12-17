@@ -436,7 +436,7 @@
        <item>
         <widget class="QStackedWidget" name="stackedWidget">
          <property name="currentIndex">
-          <number>2</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="page">
           <layout class="QGridLayout" name="gridLayout_4">
@@ -972,13 +972,13 @@
               <widget class="QTimeEdit" name="time_holder">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>110</width>
                  <height>60</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>100</width>
+                 <width>110</width>
                  <height>60</height>
                 </size>
                </property>

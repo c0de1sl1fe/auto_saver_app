@@ -357,8 +357,8 @@ class Ui_MainWindow(object):
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_6.addWidget(self.label_4)
         self.time_holder = QtWidgets.QTimeEdit(self.page_2)
-        self.time_holder.setMinimumSize(QtCore.QSize(100, 60))
-        self.time_holder.setMaximumSize(QtCore.QSize(100, 60))
+        self.time_holder.setMinimumSize(QtCore.QSize(110, 60))
+        self.time_holder.setMaximumSize(QtCore.QSize(110, 60))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.time_holder.setFont(font)
@@ -469,7 +469,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(1)
         self.change_sidebar_btn.toggled['bool'].connect(self.icon_only_widget.setVisible) # type: ignore
         self.change_sidebar_btn.toggled['bool'].connect(self.full_menu_widget.setHidden) # type: ignore
         self.home_btn_1.toggled['bool'].connect(self.home_btn_2.setChecked) # type: ignore
