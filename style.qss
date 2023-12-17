@@ -188,7 +188,16 @@
 		color: #313a46;
 		border-bottom: 1px solid #313a46;	
 	}
-
+	#page_1 QLabel {
+		font-size: 14px;
+		color: #313a46;
+		border-bottom: 1px solid #313a46;	
+	}
+	#page_3 QLabel {
+		font-size: 14px;
+		color: #313a46;
+		border-bottom: 1px solid #313a46;	
+	}
 	#page_2 QTimeEdit {
 		border: none;
 		padding: 5px 10px;
@@ -200,6 +209,10 @@
 		height: 25px;
 	}
 	#page_2 QCheckBox {
+		font-size: 14px
+		
+	} 
+	#page_2 RadioButton {
 		font-size: 14px
 		
 	}
@@ -215,4 +228,54 @@ QMessageBox {
 	background-color: #f9fafd;
 	color: #313a46;
 	font-size: 14px;
+}
+
+/*= Style for menu with icon and text START
+  ==================================================== */
+	/* style for widget */
+
+	/* style for QPushButton */
+	#page_3 QPushButton {
+		background-color: #313a46;
+		border:none;
+		border-radius: 3px;
+		text-align: left;
+		padding: 8px 0 8px 15px;
+		color: #788596;
+		font-size: 14px
+	}
+
+	#page_3 QPushButton:hover {
+		background-color: rgba( 86, 101, 115, 0.5);
+		color: #313a46
+	}
+
+	#page_3 QLabel {
+		font-size: 14px;
+		color: #313a46;
+		border-bottom: 1px solid #313a46;	
+	}
+
+	#page_3 QLineEdit {
+		border: none;
+		padding: 5px 10px;
+		font-size: 14px;
+	}
+	
+	#page_3 QCheckBox::indicator {
+		width: 25px;
+		height: 25px;
+	}
+	#page_3 QCheckBox {
+		font-size: 14px
+		
+	}
+
+/*= END
+
+
+home_label {
+			font-size: 20px;
+		color: #313a46;
+		border-bottom: 1px solid #313a46;	
 }

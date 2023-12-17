@@ -32,8 +32,14 @@ class MainWindow(QMainWindow):
 
         self.ui.icon_only_widget.hide()
         self.ui.recovery_button.setVisible(False)
-        self.ui.stackedWidget.setCurrentIndex(0)
-        self.ui.home_btn_2.setChecked(True)
+        self.ui.stackedWidget.setCurrentIndex(2)
+        # for i in range(0, 2):
+        #     self.ui.stackedWidget.widget(i).setVisible(False)
+
+        self.ui.search_btn.setVisible(False)
+        # test = self.ui.stackedWidget.widget(0)
+        # print(test.setVisible(False))
+        # self.ui.home_btn_2.setChecked(True)
 
         self.init_UI()
 
@@ -68,7 +74,6 @@ class MainWindow(QMainWindow):
     def on_stackedWidget_currentChanged(self, index):
         btn_list = self.ui.icon_only_widget.findChildren(QPushButton) \
             + self.ui.full_menu_widget.findChildren(QPushButton)
-
         for btn in btn_list:
             if index in [3, 3]:
                 btn.setAutoExclusive(False)
@@ -76,21 +81,36 @@ class MainWindow(QMainWindow):
             else:
                 btn.setAutoExclusive(True)
 
+
     # functions for changing menu page
     def on_home_btn_1_toggled(self):
         self.ui.stackedWidget.setCurrentIndex(0)
+        self.ui.stackedWidget.widget(0).setVisible(self.check)
 
     def on_home_btn_2_toggled(self):
         self.ui.stackedWidget.setCurrentIndex(0)
+        self.ui.stackedWidget.widget(0).setVisible(self.check)
 
     def on_dashboard_btn_1_toggled(self):
         self.ui.stackedWidget.setCurrentIndex(1)
+        self.ui.stackedWidget.widget(1).setVisible(self.check)
 
     def on_dashboard_btn_2_toggled(self):
         self.ui.stackedWidget.setCurrentIndex(1)
+        self.ui.stackedWidget.widget(1).setVisible(self.check)
+
+    def login(self):
+        login = self.ui.login_line.text()
+        pas = self.ui.password_line.text()
+        print(login, pas)
+        if login == "test" and pas == "123":
+            self.ui.stackedWidget.setCurrentIndex(0)
+            self.check = True
+            self.ui.search_btn.setVisible(True)
+
+
 
     def init_UI(self) -> None:
-
         # tray
         self.tray_icon = QSystemTrayIcon(QIcon("icon/Logo.png"))
         show_action = QAction("Show", self)
@@ -122,7 +142,6 @@ class MainWindow(QMainWindow):
 
         self.ui.time_holder = self.findChild(QTimeEdit, "time_holder")
         self.ui.time_holder.setDisplayFormat("m (n)")
-        # self.time_holder.editingFinished.connect(self.update_time)
         self.time_for_timer = 0
         self.ui.time_button.clicked.connect(self.update_time)
 
@@ -144,6 +163,11 @@ class MainWindow(QMainWindow):
         self.timer = QTimer()
         self.timer.setInterval(1000)
         self.ignore_pattern = []
+
+        self.check = False
+        self.ui.password_line.setEchoMode(QLineEdit.Password)
+        self.ui.login_button.clicked.connect(self.login)
+
         self.show()
 
     def __clean_array(self):
