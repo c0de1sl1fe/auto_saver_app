@@ -1017,19 +1017,6 @@
              </property>
             </spacer>
            </item>
-           <item row="2" column="3" colspan="3">
-            <spacer name="horizontalSpacer_8">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>249</width>
-               <height>59</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="6" column="3" colspan="3">
             <spacer name="horizontalSpacer_11">
              <property name="orientation">
@@ -1052,6 +1039,19 @@
               <size>
                <width>20</width>
                <height>72</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="3" colspan="3">
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>249</width>
+               <height>59</height>
               </size>
              </property>
             </spacer>

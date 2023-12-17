@@ -103,7 +103,8 @@ class MainWindow(QMainWindow):
         login = self.ui.login_line.text()
         pas = self.ui.password_line.text()
         print(login, pas)
-        if login == "test" and pas == "123":
+        # if login == "test" and pas == "123":
+        if True:
             self.ui.stackedWidget.setCurrentIndex(0)
             self.check = True
             self.ui.search_btn.setVisible(True)
