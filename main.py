@@ -181,28 +181,35 @@ class MainWindow(QMainWindow):
             for i in range(len(self.dst_list)-1):
                 self.dst_list[i] = self.external.ziping(self.dst_list[i])
 
+    def __backup__(self):
+        if not self.external.full_backup(self.src, self.dst_list[-1], self.ignore_pattern):
+            QMessageBox.warning(
+                self, "Warning", f"Something went wrong: backup failed", QMessageBox.Ok)
+            if self.timer.isActive():
+                self.timer.stop()
+            self.dst_list.remove(self.dst_list[-1])
+            return False
+        return True
+
     def backup(self):
         # add backup option
         if not self.external.is_dir(self.src):
             QMessageBox.warning(
-                self, "Warning", f"Something went wrong: src - {self.src} doesn't exist", QMessageBox.Ok)
+                self, "Warning", f"Something went wrong: src - {self.src} doesnt't exist", QMessageBox.Ok)
             if self.timer.isActive():
                 self.timer.stop()
             return
 
         if not self.dst_list and self.external.is_dir(self.src):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
-            print(f"backup {self.external.full_backup(
-                self.src, self.dst_list[-1], self.ignore_pattern)}")
+            self.__backup__()
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
             return
 
         if not self.external.cmp_folder(self.src, self.dst_list[-1], self.ignore_pattern):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
-            print(f"backup {self.external.full_backup(
-                self.src, self.dst_list[-1], self.ignore_pattern)}")
-            # if return false eslf.dst list . remove self.dst_list[-1]!!!!!!!!!!!!!!!!!!!
+            self.__backup__()
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
         else:
@@ -217,31 +224,33 @@ class MainWindow(QMainWindow):
         # add backup option
         if not self.external.is_dir(self.src):
             QMessageBox.warning(
-                self, "Warning", f"Something went wrong: src - {self.src} doesn't exist", QMessageBox.Ok)
+                self, "Warning", f"Something went wrong: src - {self.src} doesnt't exist", QMessageBox.Ok)
             if self.timer.isActive():
                 self.timer.stop()
             return
 
         if not self.dst_list and self.external.is_dir(self.src):
             self.dst_list.append(self.external.create_name(self.src, self.dst))
-            print(f"backup {self.external.full_backup(
-                self.src, self.dst_list[-1], self.ignore_pattern)}")
+            self.__backup__()
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
             return
 
         if not self.external.cmp_folder(self.src, self.dst_list[-1], self.ignore_pattern):
+            tmp_name = ""
             if self.count_fancy_backup > self.repeat:
                 self.dst_list.append(
                     self.external.create_name(self.src, self.dst))
                 self.count_fancy_backup = 0
+                self.__backup__()
             else:
                 tmp = self.external.create_name(self.src, self.dst, upd=True)
+                tmp_name = self.dst[-1]
                 self.external.rename_folder(tmp, self.dst_list[-1])
                 self.dst_list[-1] = tmp
                 self.count_fancy_backup += 1
-            print(f"backup {self.external.full_backup(
-                self.src, self.dst_list[-1], self.ignore_pattern)}")
+                if not self.__backup__():
+                    self.dst_list.append(tmp_name)
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
         else:
