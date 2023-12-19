@@ -35,16 +35,26 @@ class InterfaceFileOperation:
         return logger
 
     def check_user(self, login: str, password: str):
-        g = Github()
-        user = g.get_user(self.name)
-        hash = ""
-        for content in user.get_repo("auto_saver_app").get_contents("Passwords"):
-            print(content)
-            if content.path.endswith(".txt"):
-                hash = content.decoded_content.decode("utf-8")
-        my_hash = hashlib.md5((login+password).encode('utf-8')).hexdigest()
-        
-        return my_hash == hash
+        """Function to check users loging and password
+        @login: your login
+        @Password: your password
+        inside this function app requests file with hashed password
+        and then compart it with users password
+        """
+        try:
+            g = Github()
+            user = g.get_user(self.name)
+            hash = ""
+            for content in user.get_repo("auto_saver_app").get_contents("Passwords"):
+                print(content)
+                if content.path.endswith(".txt"):
+                    hash = content.decoded_content.decode("utf-8")
+            my_hash = hashlib.md5((login+password).encode('utf-8')).hexdigest()
+            return my_hash == hash
+        except Exception as e:
+            self.logger.warning(f"Raised exeption: {e} while archive")
+            return False
+
     def create_name(self, src: str, dst: str, upd=False):
         """create name with time of backup
             @param src - is source of folder

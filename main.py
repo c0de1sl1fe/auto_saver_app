@@ -103,11 +103,16 @@ class MainWindow(QMainWindow):
         login = self.ui.login_line.text()
         pas = self.ui.password_line.text()
         print(login, pas)
-        # if login == "test" and pas == "123":
-        if True:
+        # if True:
+        
+        if self.external.check_user(login, pas):
             self.ui.stackedWidget.setCurrentIndex(0)
             self.check = True
             self.ui.search_btn.setVisible(True)
+            self.ui.login_button.setVisible(False)
+        else:
+            QMessageBox.warning(
+                    self, "Warning", f"Wrong login or password", QMessageBox.Ok)
 
 
 
