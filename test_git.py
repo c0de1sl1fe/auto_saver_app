@@ -3,6 +3,7 @@ import base64
 import hashlib
 from utils import InterfaceFileOperation
 # name = "c0de1sl1fe"
+name = "c0de1sl1fe"
 
 # g = Github()
 
@@ -14,8 +15,6 @@ from utils import InterfaceFileOperation
 # #     # check if it's a Python file
 #     if content.path.endswith(".txt"):
 #         print(content.decoded_content.decode("utf-8"))
-a = InterfaceFileOperation()
-print(a.check_user("", "test"))
 
 
 # repo = user.get_repo("auto_saver_app")
