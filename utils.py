@@ -5,7 +5,9 @@ import logging
 import filecmp
 from datetime import datetime
 import zipfile
+import hashlib
 
+from github import Github
 import logging
 
 
@@ -16,6 +18,7 @@ class InterfaceFileOperation:
                 destination(where to save)
                 time(how often need to check updates)
         """
+        self.name = "c0de1sl1fe"
         self.logger = self.setup_logging()
 
     def setup_logging(self) -> None:
@@ -31,6 +34,17 @@ class InterfaceFileOperation:
             logger.addHandler(file_handler)
         return logger
 
+    def check_user(self, login: str, password: str):
+        g = Github()
+        user = g.get_user(self.name)
+        hash = ""
+        for content in user.get_repo("auto_saver_app").get_contents("Passwords"):
+            print(content)
+            if content.path.endswith(".txt"):
+                hash = content.decoded_content.decode("utf-8")
+        my_hash = hashlib.md5((login+password).encode('utf-8')).hexdigest()
+        
+        return my_hash == hash
     def create_name(self, src: str, dst: str, upd=False):
         """create name with time of backup
             @param src - is source of folder
@@ -90,9 +104,6 @@ class InterfaceFileOperation:
                 return False
         return True
 
-
-
-
     def is_dir(self, path) -> bool:
         """
         Check is folder or file exist
@@ -105,7 +116,8 @@ class InterfaceFileOperation:
 
     def recover(self, src: str, dst: str) -> str:
         if not os.path.exists(src) and not os.path.exists(dst):
-            self.logger.info(f"Raised exeption because of src: {src} or dst: {dst} doesn't exist")
+            self.logger.info(f"Raised exeption because of src: {
+                             src} or dst: {dst} doesn't exist")
             raise f"Error: {dst} or {src} doesn't exists"
         tmp = src
         if zipfile.is_zipfile(src):
@@ -114,7 +126,8 @@ class InterfaceFileOperation:
                 shutil.unpack_archive(src, tmp)
                 self.logger.info(f"Complete unpack archive {src} for recover")
             except Exception as e:
-                self.logger.warning(f"Raised exeption: {e} while unpack archive {src} in recover")
+                self.logger.warning(f"Raised exeption: {
+                                    e} while unpack archive {src} in recover")
             try:
                 os.remove(src)
                 self.logger.info(f"complete remove {src} for recover")
@@ -138,13 +151,16 @@ class InterfaceFileOperation:
             if ignore:
                 shutil.copytree(src, dst, ignore=shutil.ignore_patterns(
                     *ignore), dirs_exist_ok=True)
-                self.logger.info(f"complete copy {src} to {dst} with ignore_pattern")
+                self.logger.info(f"complete copy {src} to {
+                                 dst} with ignore_pattern")
             else:
                 shutil.copytree(src, dst, dirs_exist_ok=True)
-                self.logger.info(f"complete copy {src} to {dst} without ignore_pattern")
+                self.logger.info(f"complete copy {src} to {
+                                 dst} without ignore_pattern")
             return True
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while copy {src} to {dst}")
+            self.logger.warning(f"Raised exeption: {
+                                e} while copy {src} to {dst}")
             return False
 
     def cmp_folder(self, src: str, dst: str, ignore=[]) -> bool:
@@ -160,7 +176,8 @@ class InterfaceFileOperation:
             False otherwise.
         """
         if not os.path.exists(src) or not os.path.exists(dst):
-            self.logger.warning(f"cmp_folder for {src} and {dst} doens't complete")
+            self.logger.warning(f"cmp_folder for {src} and {
+                                dst} doens't complete")
             return False
         ignore_list = []
         if not ignore:
