@@ -15,6 +15,8 @@ name = "c0de1sl1fe"
 # #     # check if it's a Python file
 #     if content.path.endswith(".txt"):
 #         print(content.decoded_content.decode("utf-8"))
+a = InterfaceFileOperation()
+print(a.check_user("", "test"))
 
 
 # repo = user.get_repo("auto_saver_app")
