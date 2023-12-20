@@ -102,11 +102,10 @@ class MainWindow(QMainWindow):
     def login(self):
         login = self.ui.login_line.text()
         pas = self.ui.password_line.text()
-        print(login, pas)
         # if True:
         
-        # if self.external.check_user(login, pas):
-        if True:
+        if self.external.check_user(login, pas):
+        # if True:
             self.ui.stackedWidget.setCurrentIndex(0)
             self.check = True
             self.ui.search_btn.setVisible(True)
@@ -114,7 +113,12 @@ class MainWindow(QMainWindow):
         else:
             QMessageBox.warning(
                     self, "Warning", f"Wrong login or password", QMessageBox.Ok)
-
+            if self.count_login>4:
+                QMessageBox.critical(
+                    self, "Fatal error", f"You gone beyond the limit number of entrance, program end", QMessageBox.Ok)
+                print(self.count_login)
+                qApp.quit()
+            self.count_login+=1
 
 
     def init_UI(self) -> None:
@@ -180,6 +184,9 @@ class MainWindow(QMainWindow):
         self.ui.password_line.setEchoMode(QLineEdit.Password)
         self.ui.login_button.clicked.connect(self.login)
 
+
+        self.external.load_login()
+        self.count_login = 0
         self.show()
 
     def __clean_array(self):
@@ -282,7 +289,6 @@ class MainWindow(QMainWindow):
             text, ok = QInputDialog.getItem(
                 self, 'Choose what to recover', 'List:', self.dst_list)
             if ok and text:
-                print(text)
                 self.dst_list.remove(text)
                 self.dst_list.append(self.external.recover(text, self.src))
                 self.__clean_array()

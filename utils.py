@@ -19,6 +19,7 @@ class InterfaceFileOperation:
                 time(how often need to check updates)
         """
         self.name = "c0de1sl1fe"
+        self.hash = ""
         self.logger = self.setup_logging()
 
     def setup_logging(self) -> None:
@@ -34,6 +35,17 @@ class InterfaceFileOperation:
             logger.addHandler(file_handler)
         return logger
 
+    def load_login(self):
+        try:
+            g = Github()
+            user = g.get_user(self.name)
+            hash = ""
+            for content in user.get_repo("auto_saver_app").get_contents("Passwords"):
+                if content.path.endswith(".txt"):
+                    self.hash = content.decoded_content.decode("utf-8")
+        except Exception as e:
+            self.logger.warning(f"Raised exeption: {e} while load login")
+
     def check_user(self, login: str, password: str):
         """Function to check users loging and password
         @login: your login
@@ -41,18 +53,19 @@ class InterfaceFileOperation:
         inside this function app requests file with hashed password
         and then compart it with users password
         """
+        my_hash = hashlib.md5((login+password).encode('utf-8')).hexdigest()
+        if self.hash:
+            return my_hash == self.hash
         try:
             g = Github()
             user = g.get_user(self.name)
             hash = ""
             for content in user.get_repo("auto_saver_app").get_contents("Passwords"):
-                print(content)
                 if content.path.endswith(".txt"):
                     hash = content.decoded_content.decode("utf-8")
-            my_hash = hashlib.md5((login+password).encode('utf-8')).hexdigest()
             return my_hash == hash
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while archive")
+            self.logger.warning(f"Raised exeption: {e} login")
             return False
 
     def create_name(self, src: str, dst: str, upd=False):
