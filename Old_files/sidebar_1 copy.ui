@@ -950,10 +950,7 @@
            <item row="2" column="0" colspan="3">
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <property name="spacing">
-              <number>4</number>
-             </property>
-             <property name="rightMargin">
-              <number>10</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QLabel" name="label_4">
@@ -975,16 +972,16 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="timer_holder">
+              <widget class="QTimeEdit" name="time_holder">
                <property name="minimumSize">
                 <size>
-                 <width>140</width>
+                 <width>110</width>
                  <height>60</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>140</width>
+                 <width>110</width>
                  <height>60</height>
                 </size>
                </property>

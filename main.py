@@ -10,7 +10,7 @@ from sidebar import Ui_MainWindow
 import typing
 from PyQt5 import QtCore
 from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QShortcut, qApp, QMenu, QAction, QInputDialog, QLineEdit, QDesktopWidget, QDialog, QFileDialog, QMessageBox, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QTimeEdit, QRadioButton, QCheckBox, QStatusBar, QSystemTrayIcon
+from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QShortcut, qApp, QMenu, QAction, QInputDialog, QLineEdit, QDesktopWidget, QDialog, QFileDialog, QMessageBox, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QSpinBox, QTimeEdit, QRadioButton, QCheckBox, QStatusBar, QSystemTrayIcon
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import QTimer
 from PyQt5 import uic
@@ -105,7 +105,8 @@ class MainWindow(QMainWindow):
         print(login, pas)
         # if True:
         
-        if self.external.check_user(login, pas):
+        # if self.external.check_user(login, pas):
+        if True:
             self.ui.stackedWidget.setCurrentIndex(0)
             self.check = True
             self.ui.search_btn.setVisible(True)
@@ -146,8 +147,13 @@ class MainWindow(QMainWindow):
         self.ui.to_button.clicked.connect(
             partial(self.__input_path, self.ui.to_lable))
 
-        self.ui.time_holder = self.findChild(QTimeEdit, "time_holder")
-        self.ui.time_holder.setDisplayFormat("m (n)")
+        # self.ui.time_holder = self.findChild(QTimeEdit, "time_holder")
+        self.ui.time_holder = self.findChild(QSpinBox, "timer_holder")
+        self.ui.timer_holder.setSuffix(" min")
+        # self.ui.time_holder.setDisplayFormat("m (n)")
+        self.ui.time_holder.setRange(0, 10)
+        self.ui.timer_holder.setValue(0)
+
         self.time_for_timer = 0
         self.ui.time_button.clicked.connect(self.update_time)
 
@@ -266,9 +272,10 @@ class MainWindow(QMainWindow):
         print("_timer_end_")
 
     def update_time(self):
-        value = self.ui.time_holder.time().toPyTime()
+        # value = self.ui.time_holder.time().toPyTime()
+        value = self.ui.timer_holder.value()
         self.ui.recovery_button.setVisible(False)
-        self.time_for_timer = value.minute*60*60  # tmp
+        self.time_for_timer = value*60*60  # tmp        
 
     def setup_recover(self):
         if self.dst_list:
