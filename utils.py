@@ -141,7 +141,7 @@ class InterfaceFileOperation:
         if not os.path.exists(src) and not os.path.exists(dst):
             self.logger.info(f"Raised exeption because of src: {
                              src} or dst: {dst} doesn't exist")
-            raise f"Error: {dst} or {src} doesn't exists"
+            return ""
         tmp = src
         if zipfile.is_zipfile(src):
             try:

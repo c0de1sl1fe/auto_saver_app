@@ -115,7 +115,7 @@ class MainWindow(QMainWindow):
                     self, "Warning", f"Wrong login or password", QMessageBox.Ok)
             if self.count_login>4:
                 QMessageBox.critical(
-                    self, "Fatal error", f"You gone beyond the limit number of entrance, program end", QMessageBox.Ok)
+                    self, "Fatal error", f"You gone beyond the limit number of entrance, \nprogram end", QMessageBox.Ok)
                 print(self.count_login)
                 qApp.quit()
             self.count_login+=1
@@ -202,7 +202,7 @@ class MainWindow(QMainWindow):
     def __backup__(self):
         if not self.external.full_backup(self.src, self.dst_list[-1], self.ignore_pattern):
             QMessageBox.warning(
-                self, "Warning", f"Something went wrong: backup failed", QMessageBox.Ok)
+                self, "Warning", f"Something went wrong: \nbackup failed", QMessageBox.Ok)
             if self.timer.isActive():
                 self.timer.stop()
             self.dst_list.remove(self.dst_list[-1])
@@ -213,7 +213,7 @@ class MainWindow(QMainWindow):
         # add backup option
         if not self.external.is_dir(self.src):
             QMessageBox.warning(
-                self, "Warning", f"Something went wrong: src - {self.src} doesnt't exist", QMessageBox.Ok)
+                self, "Warning", f"Something went wrong: \nsrc - {self.src} doesnt't exist", QMessageBox.Ok)
             if self.timer.isActive():
                 self.timer.stop()
             return
@@ -242,7 +242,7 @@ class MainWindow(QMainWindow):
         # add backup option
         if not self.external.is_dir(self.src):
             QMessageBox.warning(
-                self, "Warning", f"Something went wrong: src - {self.src} doesnt't exist", QMessageBox.Ok)
+                self, "Warning", f"Something went wrong: \nsrc - {self.src} doesnt't exist", QMessageBox.Ok)
             if self.timer.isActive():
                 self.timer.stop()
             return
@@ -286,14 +286,19 @@ class MainWindow(QMainWindow):
 
     def setup_recover(self):
         if self.dst_list:
-            text, ok = QInputDialog.getItem(
+            return_recover_src, ok = QInputDialog.getItem(
                 self, 'Choose what to recover', 'List:', self.dst_list)
-            if ok and text:
-                self.dst_list.remove(text)
-                self.dst_list.append(self.external.recover(text, self.src))
-                self.__clean_array()
-                self.__zip_array()
-                self.ui.recovery_button.setVisible(False)
+            if ok and return_recover_src:
+                check_return = self.external.recover(return_recover_src, self.src)
+                if check_return:
+                    self.dst_list.remove(return_recover_src)
+                    self.dst_list.append(check_return)
+                    self.__clean_array()
+                    self.__zip_array()
+                    self.ui.recovery_button.setVisible(False)
+                else:
+                    QMessageBox.warning(
+                        self, "Warning", f"Something went wrong:\n path status exists {return_recover_src} - {self.external.is_dir(return_recover_src)} \n{self.src} - {self.external.is_dir(self.src)} ", QMessageBox.Ok)
         else:
             QMessageBox.about(self, "No recover option",
                               "There's nothing to recover")
