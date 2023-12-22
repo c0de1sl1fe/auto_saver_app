@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QWidget
 from PyQt5.QtCore import pyqtSlot, QFile, QTextStream
 from PyQt5.QtGui import QMovie, QIcon
 
-from sidebar import Ui_MainWindow
+from app import Ui_MainWindow
 
 import typing
 from PyQt5 import QtCore
@@ -33,14 +33,7 @@ class MainWindow(QMainWindow):
         self.ui.icon_only_widget.hide()
         self.ui.recovery_button.setVisible(False)
         self.ui.stackedWidget.setCurrentIndex(2)
-        # for i in range(0, 2):
-        #     self.ui.stackedWidget.widget(i).setVisible(False)
-
         self.ui.search_btn.setVisible(False)
-        # test = self.ui.stackedWidget.widget(0)
-        # print(test.setVisible(False))
-        # self.ui.home_btn_2.setChecked(True)
-
         self.init_UI()
 
     # Function for searching
@@ -81,8 +74,8 @@ class MainWindow(QMainWindow):
             else:
                 btn.setAutoExclusive(True)
 
-
     # functions for changing menu page
+
     def on_home_btn_1_toggled(self):
         self.ui.stackedWidget.setCurrentIndex(0)
         self.ui.stackedWidget.widget(0).setVisible(self.check)
@@ -103,23 +96,22 @@ class MainWindow(QMainWindow):
         login = self.ui.login_line.text()
         pas = self.ui.password_line.text()
         # if True:
-        
+
         if self.external.check_user(login, pas):
-        # if True:
+            # if True:
             self.ui.stackedWidget.setCurrentIndex(0)
             self.check = True
             self.ui.search_btn.setVisible(True)
             self.ui.login_button.setVisible(False)
         else:
             QMessageBox.warning(
-                    self, "Warning", f"Wrong login or password", QMessageBox.Ok)
-            if self.count_login>4:
+                self, "Warning", f"Wrong login or password", QMessageBox.Ok)
+            if self.count_login > 4:
                 QMessageBox.critical(
                     self, "Fatal error", f"You gone beyond the limit number of entrance, \nprogram end", QMessageBox.Ok)
                 print(self.count_login)
                 qApp.quit()
-            self.count_login+=1
-
+            self.count_login += 1
 
     def init_UI(self) -> None:
         # tray
@@ -185,7 +177,7 @@ class MainWindow(QMainWindow):
         self.ui.login_button.clicked.connect(self.login)
 
         a = QMessageBox.about(self, "Loading...",
-                    "Please wait, loading data")
+                              "Please wait, loading data")
         self.external.load_login()
         self.count_login = 0
         self.show()
@@ -283,14 +275,15 @@ class MainWindow(QMainWindow):
         # value = self.ui.time_holder.time().toPyTime()
         value = self.ui.timer_holder.value()
         self.ui.recovery_button.setVisible(False)
-        self.time_for_timer = value*60*60  # tmp        
+        self.time_for_timer = value*60*60  # tmp
 
     def setup_recover(self):
         if self.dst_list:
             return_recover_src, ok = QInputDialog.getItem(
                 self, 'Choose what to recover', 'List:', self.dst_list)
             if ok and return_recover_src:
-                check_return = self.external.recover(return_recover_src, self.src)
+                check_return = self.external.recover(
+                    return_recover_src, self.src)
                 if check_return:
                     self.dst_list.remove(return_recover_src)
                     self.dst_list.append(check_return)

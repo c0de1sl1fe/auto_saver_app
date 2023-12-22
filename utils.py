@@ -36,17 +36,17 @@ class InterfaceFileOperation:
         return logger
 
     def load_login(self):
+        """fucntion for load hash from file on github"""
         try:
             g = Github()
             user = g.get_user(self.name)
-            hash = ""
             for content in user.get_repo("auto_saver_app").get_contents("Passwords"):
                 if content.path.endswith(".txt"):
                     self.hash = content.decoded_content.decode("utf-8")
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while load login")
+            self.logger.warning(f"Raised exception: {e} while load login")
 
-    def check_user(self, login: str, password: str):
+    def check_user(self, login: str, password: str) -> bool:
         """Function to check users loging and password
         @login: your login
         @Password: your password
@@ -65,10 +65,10 @@ class InterfaceFileOperation:
                     hash = content.decoded_content.decode("utf-8")
             return my_hash == hash
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} login")
+            self.logger.warning(f"Raised exception: {e} login")
             return False
 
-    def create_name(self, src: str, dst: str, upd=False):
+    def create_name(self, src: str, dst: str, upd=False) -> str:
         """create name with time of backup
             @param src - is source of folder
             @param dst - is destination for folder
@@ -100,14 +100,14 @@ class InterfaceFileOperation:
             new_path = shutil.make_archive(src, "zip", src)
             self.logger.info(f"Create archive - {new_path}")
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while archive")
+            self.logger.warning(f"Raised exception: {e} while archive")
             new_path = src
         try:
             shutil.rmtree(src)
             self.logger.info(f"Complete removing tree - {src}")
 
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while removing dir")
+            self.logger.warning(f"Raised exception: {e} while removing dir")
         return new_path
 
     def rename_folder(self, new: str, old: str) -> bool:
@@ -115,7 +115,7 @@ class InterfaceFileOperation:
             shutil.move(old, new)
             self.logger.info(f"Folder {old} renamed to {new}")
         except Exception as e:
-            self.logger.warning(f"Raised exeption: {e} while rename")
+            self.logger.warning(f"Raised exception: {e} while rename")
             return False
 
         if os.path.exists(os.path.split(old)[0]):
@@ -123,7 +123,7 @@ class InterfaceFileOperation:
                 shutil.rmtree(os.path.split(old)[0])
                 return True
             except Exception as e:
-                self.logger.warning(f"Raised exeption: {e} while rename")
+                self.logger.warning(f"Raised exception: {e} while rename")
                 return False
         return True
 
@@ -139,7 +139,7 @@ class InterfaceFileOperation:
 
     def recover(self, src: str, dst: str) -> str:
         if not os.path.exists(src) and not os.path.exists(dst):
-            self.logger.info(f"Raised exeption because of src: {
+            self.logger.info(f"Raised exception because of src: {
                              src} or dst: {dst} doesn't exist")
             return ""
         tmp = src
@@ -149,13 +149,13 @@ class InterfaceFileOperation:
                 shutil.unpack_archive(src, tmp)
                 self.logger.info(f"Complete unpack archive {src} for recover")
             except Exception as e:
-                self.logger.warning(f"Raised exeption: {
+                self.logger.warning(f"Raised exception: {
                                     e} while unpack archive {src} in recover")
             try:
                 os.remove(src)
                 self.logger.info(f"complete remove {src} for recover")
             except Exception as e:
-                self.logger.warning(f"Raised exeption: {e} while remove {src}")
+                self.logger.warning(f"Raised exception: {e} while remove {src}")
         self.full_backup(tmp, dst)
         return tmp
 
