@@ -184,7 +184,8 @@ class MainWindow(QMainWindow):
         self.ui.password_line.setEchoMode(QLineEdit.Password)
         self.ui.login_button.clicked.connect(self.login)
 
-
+        a = QMessageBox.about(self, "Loading...",
+                    "Please wait, loading data")
         self.external.load_login()
         self.count_login = 0
         self.show()
