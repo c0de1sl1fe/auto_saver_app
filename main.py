@@ -164,8 +164,6 @@ class MainWindow(QMainWindow):
         self.ui.recovery_button.clicked.connect(self.setup_recover)
         self.ui.info_button.clicked.connect(self.info)
 # ################################################################################################
-        
-
 
         self.count_fancy_backup = 0
         self.repeat = 2
@@ -205,9 +203,8 @@ class MainWindow(QMainWindow):
         return True
 
     def info(self):
-        QMessageBox.about(self, "List of changing", f"Changed: {self.external.stats()}")
-
-
+        QMessageBox.about(self, "List of changing",
+                          f"Changed: {self.external.stats()}")
 
     def backup(self):
         # add backup option
@@ -233,7 +230,7 @@ class MainWindow(QMainWindow):
         else:
             if self.time_for_timer == 0:
                 QMessageBox.about(self, "Equal",
-                                f"Nothing changed")
+                                  f"Nothing changed")
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
         self.__clean_array()
@@ -274,7 +271,7 @@ class MainWindow(QMainWindow):
         else:
             if self.time_for_timer == 0:
                 QMessageBox.about(self, "Equal",
-                                f"Nothing changed")
+                                  f"Nothing changed")
 
         self.__clean_array()
         self.__zip_array()
@@ -344,18 +341,15 @@ class MainWindow(QMainWindow):
                         self.backup_action.setText("Stop")
 
                 else:
-                    print(
-                        f"(self.src in self.dst - {self.src in self.dst} or self.dst in self.src - {self.dst in self.src})")
-                    QMessageBox.warning(self, "Warning", f"(self.src in self.dst - {
-                                        self.src in self.dst} or self.dst in self.src - {self.dst in self.src})", QMessageBox.Ok)
+                    QMessageBox.warning(
+                        self, "Warning", f"Change source or destination, can't copy itself", QMessageBox.Ok)
                     self.ui.stats_lable.setText("Error")
             else:
                 print('sad')
                 QMessageBox.warning(
-                    self, "Warning", f"Something went wrong: \ntimer is {self.timer.isActive()} \ntime interval: {self.time_for_timer} \nsrc: {self.src} \ndst {self.dst}", QMessageBox.Ok)
-                print(
-                    f"timer is {self.timer.isActive()} and it's because: {self.time_for_timer} or src {self.src} or dst {self.dst}")
-
+                    self, "Warning", f"Something went wrong: \ntimer is {self.timer.isActive()} \ntime interval: {self.time_for_timer} \nsrc: {self.src} exist {self.external.is_dir(self.src)}\ndst {self.dst} exist {self.external.is_dir(self.src)}", QMessageBox.Ok)
+                self.ui.stats_lable.setText("Error")
+                
     def __input_path(self, label: QLabel) -> None:
         """service function"""
         tmp = QFileDialog.getExistingDirectory(self, 'Select Folder')
