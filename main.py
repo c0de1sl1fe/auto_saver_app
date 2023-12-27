@@ -150,24 +150,18 @@ class MainWindow(QMainWindow):
 
         self.time_for_timer = 0
         self.ui.time_button.clicked.connect(self.update_time)
-
         self.check_boxes = []
-
         self.check_boxes = self.ui.stackedWidget.findChildren(QCheckBox)
-
-        self.external = InterfaceFileOperation()
         self.ui.tmp_button.clicked.connect(self.setup_backup)
-
         self.setWindowTitle("AutoSaver")
         self.setWindowIcon(QIcon("icon/logo.png"))
 
         self.ui.recovery_button.clicked.connect(self.setup_recover)
         self.ui.info_button.clicked.connect(self.info)
-# ################################################################################################
 
         self.count_fancy_backup = 0
         self.repeat = 2
-
+        self.external = InterfaceFileOperation()
         self.timer = QTimer()
         self.timer.setInterval(1000)
         self.ignore_pattern = []
@@ -349,7 +343,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.warning(
                     self, "Warning", f"Something went wrong: \ntimer is {self.timer.isActive()} \ntime interval: {self.time_for_timer} \nsrc: {self.src} exist {self.external.is_dir(self.src)}\ndst {self.dst} exist {self.external.is_dir(self.src)}", QMessageBox.Ok)
                 self.ui.stats_lable.setText("Error")
-                
+
     def __input_path(self, label: QLabel) -> None:
         """service function"""
         tmp = QFileDialog.getExistingDirectory(self, 'Select Folder')
