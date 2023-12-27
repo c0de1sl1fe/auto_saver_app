@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
 
         self.ui.icon_only_widget.hide()
         self.ui.recovery_button.setVisible(False)
+        self.ui.info_button.setVisible(False)
         self.ui.stackedWidget.setCurrentIndex(2)
         self.ui.search_btn.setVisible(False)
         self.init_UI()
@@ -95,10 +96,7 @@ class MainWindow(QMainWindow):
     def login(self):
         login = self.ui.login_line.text()
         pas = self.ui.password_line.text()
-        # if True:
-
         if self.external.check_user(login, pas):
-            # if True:
             self.ui.stackedWidget.setCurrentIndex(0)
             self.check = True
             self.ui.search_btn.setVisible(True)
@@ -164,6 +162,10 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon("icon/logo.png"))
 
         self.ui.recovery_button.clicked.connect(self.setup_recover)
+        self.ui.info_button.clicked.connect(self.info)
+# ################################################################################################
+        
+
 
         self.count_fancy_backup = 0
         self.repeat = 2
@@ -202,6 +204,11 @@ class MainWindow(QMainWindow):
             return False
         return True
 
+    def info(self):
+        QMessageBox.about(self, "List of changing", f"Changed: {self.external.stats()}")
+
+
+
     def backup(self):
         # add backup option
         if not self.external.is_dir(self.src):
@@ -224,15 +231,15 @@ class MainWindow(QMainWindow):
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
         else:
-            print("equal")
+            if self.time_for_timer == 0:
+                QMessageBox.about(self, "Equal",
+                                f"Nothing changed")
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
         self.__clean_array()
         self.__zip_array()
-        print("_timer_end_")
 
     def fancy_backup(self):
-        # add backup option
         if not self.external.is_dir(self.src):
             QMessageBox.warning(
                 self, "Warning", f"Something went wrong: \nsrc - {self.src} doesnt't exist", QMessageBox.Ok)
@@ -265,16 +272,17 @@ class MainWindow(QMainWindow):
             self.ui.stats_lable.setText(
                 f"last backup: {os.path.basename(os.path.split(self.dst_list[-1])[0])}")
         else:
-            print("equal")
+            if self.time_for_timer == 0:
+                QMessageBox.about(self, "Equal",
+                                f"Nothing changed")
 
         self.__clean_array()
         self.__zip_array()
-        print("_timer_end_")
 
     def update_time(self):
-        # value = self.ui.time_holder.time().toPyTime()
         value = self.ui.timer_holder.value()
         self.ui.recovery_button.setVisible(False)
+        self.ui.info_button.setVisible(False)
         self.time_for_timer = value*60*60  # tmp
 
     def setup_recover(self):
@@ -290,6 +298,8 @@ class MainWindow(QMainWindow):
                     self.__clean_array()
                     self.__zip_array()
                     self.ui.recovery_button.setVisible(False)
+                    self.ui.info_button.setVisible(False)
+                    self.external.clear_stats()
                 else:
                     QMessageBox.warning(
                         self, "Warning", f"Something went wrong:\n path status exists {return_recover_src} - {self.external.is_dir(return_recover_src)} \n{self.src} - {self.external.is_dir(self.src)} ", QMessageBox.Ok)
@@ -303,6 +313,7 @@ class MainWindow(QMainWindow):
             self.ui.tmp_button.setText("Start")
             self.backup_action.setText("Start backup")
             self.ui.recovery_button.setVisible(True)
+            self.ui.info_button.setVisible(True)
         else:
             self.ignore_pattern.clear()
             for i in self.check_boxes:
@@ -318,6 +329,7 @@ class MainWindow(QMainWindow):
                         if self.ui.backup_option_2.isChecked():
                             self.fancy_backup()
                         self.ui.recovery_button.setVisible(True)
+                        self.ui.info_button.setVisible(True)
                     else:
                         if self.ui.backup_option_1.isChecked():
                             self.timer.timeout.connect(self.backup)

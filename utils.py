@@ -20,6 +20,7 @@ class InterfaceFileOperation:
         """
         self.name = "c0de1sl1fe"
         self.hash = ""
+        self.chaging_list = []
         self.logger = self.setup_logging()
 
     def setup_logging(self) -> None:
@@ -155,7 +156,8 @@ class InterfaceFileOperation:
                 os.remove(src)
                 self.logger.info(f"complete remove {src} for recover")
             except Exception as e:
-                self.logger.warning(f"Raised exception: {e} while remove {src}")
+                self.logger.warning(f"Raised exception: {
+                                    e} while remove {src}")
         self.full_backup(tmp, dst)
         return tmp
 
@@ -216,10 +218,12 @@ class InterfaceFileOperation:
             self.dirs_cmp = filecmp.dircmp(src, dst)
         if len(self.dirs_cmp.left_only) > 0 or len(self.dirs_cmp.right_only) > 0 or \
                 len(self.dirs_cmp.funny_files) > 0:
+            print(1)
             return False
         (_, mismatch, errors) = filecmp.cmpfiles(
             src, dst, self.dirs_cmp.common_files, shallow=False)
         if len(mismatch) > 0 or len(errors) > 0:
+            self.chaging_list.append(mismatch)
             return False
         for common_dir in self.dirs_cmp.common_dirs:
             new_dir1 = os.path.join(src, common_dir)
@@ -227,6 +231,14 @@ class InterfaceFileOperation:
             if not self.cmp_folder(new_dir1, new_dir2):
                 return False
         return True
+
+    def stats(self):
+        """ returns changing_list """
+        return self.chaging_list
+
+    def clear_stats(self):
+        """ clear changing_list """
+        self.chaging_list.clear()
 
 
 if __name__ == '__main__':
