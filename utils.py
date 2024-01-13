@@ -29,7 +29,7 @@ class InterfaceFileOperation:
         if not logger.handlers:
             logger.setLevel(logging.INFO)
             file_handler = logging.FileHandler("autosaver.log")
-            file_handler.setLevel(logging.DEBUG)
+            file_handler.setLevel(logging.WARNING)
             formatter = logging.Formatter(
                 "%(asctime)s - %(levelname)s - %(message)s")
             file_handler.setFormatter(formatter)
